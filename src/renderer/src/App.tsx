@@ -1,6 +1,6 @@
-import type { Component } from 'solid-js'
-import Versions from './components/Versions'
-import logo from './assets/logo.svg'
+import type { Component } from "solid-js";
+import Versions from "./components/Versions";
+import logo from "./assets/logo.svg";
 
 const App: Component = () => {
   return (
@@ -48,7 +48,7 @@ const App: Component = () => {
           <article>
             <h2 class="title">Configuring</h2>
             <p class="detail">
-              Config with <span>electron.vite.config.ts</span> and refer to the{' '}
+              Config with <span>electron.vite.config.ts</span> and refer to the{" "}
               <a target="_blank" href="https://evite.netlify.app/config/" rel="noopener noreferrer">
                 config guide
               </a>
@@ -58,9 +58,9 @@ const App: Component = () => {
         </div>
         <div class="feature-item">
           <article>
-            <h2 class="title">HMR</h2>
+            <h2 class="title">HMRHMR</h2>
             <p class="detail">
-              Edit <span>src/renderer</span> files to test HMR. See{' '}
+              Edit <span>src/renderer</span> files to test HMR. See{" "}
               <a
                 target="_blank"
                 href="https://evite.netlify.app/guide/hmr-in-renderer.html"
@@ -76,11 +76,11 @@ const App: Component = () => {
           <article>
             <h2 class="title">Hot Reloading</h2>
             <p class="detail">
-              Run{' '}
+              Run{" "}
               <span>
                 {"'"}electron-vite dev --watch{"'"}
-              </span>{' '}
-              to enable. See{' '}
+              </span>{" "}
+              to enable. See{" "}
               <a
                 target="_blank"
                 href="https://evite.netlify.app/guide/hot-reloading.html"
@@ -96,7 +96,7 @@ const App: Component = () => {
           <article>
             <h2 class="title">Debugging</h2>
             <p class="detail">
-              Check out <span>.vscode/launch.json</span>. See{' '}
+              Check out <span>.vscode/launch.json</span>. See{" "}
               <a
                 target="_blank"
                 href="https://evite.netlify.app/guide/debugging.html"
@@ -112,7 +112,7 @@ const App: Component = () => {
           <article>
             <h2 class="title">Source Code Protection</h2>
             <p class="detail">
-              Supported via built-in plugin <span>bytecodePlugin</span>. See{' '}
+              Supported via built-in plugin <span>bytecodePlugin</span>. See{" "}
               <a
                 target="_blank"
                 href="https://evite.netlify.app/guide/source-code-protection.html"
@@ -128,17 +128,17 @@ const App: Component = () => {
           <article>
             <h2 class="title">Packaging</h2>
             <p class="detail">
-              Use{' '}
+              Use{" "}
               <a target="_blank" href="https://www.electron.build" rel="noopener noreferrer">
                 electron-builder
-              </a>{' '}
+              </a>{" "}
               and pre-configured to pack your app.
             </p>
           </article>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
