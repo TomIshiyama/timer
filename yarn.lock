@@ -1661,7 +1661,7 @@
     remark-slug "^6.0.0"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-essentials@^7.0.7":
+"@storybook/addon-essentials@^7.0.12":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/addon-essentials/-/addon-essentials-7.0.12.tgz#3d7475d2c80eb746478cfee7e65915c29ec2df43"
   integrity sha512-Js2cxvauAf8fkA5D0QrqPPe/FvpY1DbJp61VNGh82Xu0zZrczCGYP3jkWG79vl0zllJNs7hnkV8W6xY1JWgLoA==
@@ -1690,7 +1690,7 @@
     "@storybook/global" "^5.0.0"
     "@storybook/preview-api" "7.0.12"
 
-"@storybook/addon-interactions@^7.0.7":
+"@storybook/addon-interactions@^7.0.12":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-7.0.12.tgz#585403b16044ea3e4c83e59891328dc5fa778243"
   integrity sha512-Rb1mv1RQrTd3sA/WwNTdv00rW+7APfvZEeZks6+8+kS1C4EFMDmLnVBZlPllFdo1BOnTCyer4GZZ5ncVkWNLyQ==
@@ -1709,7 +1709,7 @@
     polished "^4.2.2"
     ts-dedent "^2.2.0"
 
-"@storybook/addon-links@^7.0.7":
+"@storybook/addon-links@^7.0.12":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-7.0.12.tgz#cef11a5c1dbe552afb7fea354d9c9268c84c79d7"
   integrity sha512-6kGClsIpX9dRKc5bUAPNcp/4wlgPIxMrieUV+6k1dTsRQqbaEfxih/Fq259D5+yVBDNi3YAnvRjMiIibl8fa5A==
@@ -1778,7 +1778,7 @@
     memoizerific "^1.11.3"
     prop-types "^15.7.2"
 
-"@storybook/blocks@7.0.12", "@storybook/blocks@^7.0.7":
+"@storybook/blocks@7.0.12", "@storybook/blocks@^7.0.12":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/blocks/-/blocks-7.0.12.tgz#4b92955c49f7beea58df1c0f8d3138dc54a01444"
   integrity sha512-MbJKjuTJ7xVbkUVwkEwb6vTYGrkRk4+Xtx1UGo+512o91ubqFs8hXwCHP+x/49RCIIQs5zl93Ig8fTtm+MejWw==
@@ -1828,7 +1828,7 @@
     process "^0.11.10"
     util "^0.12.4"
 
-"@storybook/builder-vite@^7.0.7", "@storybook/builder-vite@next":
+"@storybook/builder-vite@^7.0.12", "@storybook/builder-vite@next":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/builder-vite/-/builder-vite-7.0.12.tgz#3a477b3ce4c34c88550618dba8a29d425fa99257"
   integrity sha512-6FJNXis+dYs/KrhfRQgz8HcRw/Oq4FaEghCwsjngQDy4PcpQuxkDbvGJKlBaSr92vUL36FWSPq8u5+VGCHjh5Q==
@@ -5732,7 +5732,7 @@ lodash@^4.17.15, lodash@^4.17.21:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-loose-envify@^1.4.0:
+loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -6558,6 +6558,14 @@ react-colorful@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.6.1.tgz#7dc2aed2d7c72fac89694e834d179e32f3da563b"
   integrity sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw==
 
+react-dom@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
+  integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
+  dependencies:
+    loose-envify "^1.1.0"
+    scheduler "^0.23.0"
+
 react-inspector@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-6.0.1.tgz#1a37f0165d9df81ee804d63259eaaeabe841287d"
@@ -6572,6 +6580,13 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
+  integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
+  dependencies:
+    loose-envify "^1.1.0"
 
 read-config-file@6.2.0:
   version "6.2.0"
@@ -6873,6 +6888,13 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
+scheduler@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.0.tgz#ba8041afc3d30eb206a487b6b384002e4e61fdfe"
+  integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
+  dependencies:
+    loose-envify "^1.1.0"
+
 semver-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/semver-compare/-/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
@@ -7158,7 +7180,7 @@ storybook-solidjs@^1.0.0-beta.2:
   resolved "https://registry.yarnpkg.com/storybook-solidjs/-/storybook-solidjs-1.0.0-beta.2.tgz#0890906e1be0c600e2d82f4c83f115d96287ad60"
   integrity sha512-wXjM/uH29IPjgxlPvQVNTM/7iBFNNzjuOugpk7iM2oy+sZl7K70eBjvOqGgX5v35pNHTaA8Ju3BlLdp+O20abg==
 
-storybook@^7.0.7:
+storybook@^7.0.12:
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/storybook/-/storybook-7.0.12.tgz#353f711fd25cff5e93e1b2f85540371ffb860544"
   integrity sha512-HKi7NQQTZhBGEU3KUFxTNGtIZcG8+hokiO5TwcIr7s7smAVKdvj9vY5YGsVkiWF39o+5UtafW1B/i9D8lBFsYg==
