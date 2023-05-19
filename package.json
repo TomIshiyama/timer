@@ -21,7 +21,8 @@
     "build:mac": "electron-vite build && electron-builder --mac --config",
     "build:linux": "electron-vite build && electron-builder --linux --config",
     "storybook": "storybook dev -p 6007",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_fb3e314e9173bdc"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.3",
@@ -42,6 +43,7 @@
     "@types/node": "16.18.21",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
+    "chromatic": "^6.17.4",
     "electron": "^22.3.4",
     "electron-builder": "^23.6.0",
     "electron-vite": "^1.0.21",
