@@ -1,7 +1,8 @@
 import { Component, For, createSignal } from "solid-js";
-import { styled } from "solid-styled-components";
+import { css, styled } from "solid-styled-components";
 import { Tabs } from "@kobalte/core";
 import { JSX } from "solid-js/types/jsx";
+import { ComponentParameters } from "@renderer/utils/types";
 
 export const tabMenus = {
   pomodoro: "pomodoro",
@@ -12,7 +13,6 @@ export const tabMenus = {
 } as const;
 
 type Props = {
-  hoge: string;
   defaultValue?: string;
   tabList: {
     value: string;
@@ -44,24 +44,44 @@ export const Tab: Component<Props> = (props) => {
       >
         <StyledTabList>
           <For each={props.tabList} fallback={<div>Loading...</div>}>
-            {(item): JSX.Element => <Tabs.Trigger value={item.value}>{item.label}</Tabs.Trigger>}
+            {(item): JSX.Element => <Trigger value={item.value}>{item.label}</Trigger>}
           </For>
-          <Tabs.Indicator />
+          <Indicator orientation={props.orientation} />
         </StyledTabList>
         <For each={props.tabList} fallback={<div>Loading...</div>}>
-          {(item): JSX.Element => <Tabs.Content value={item.value}>{item.content}</Tabs.Content>}
+          {(item): JSX.Element => <Content value={item.value}>{item.content}</Content>}
         </For>
       </StyledTabs>
     </div>
   );
 };
 
-const StyledTabs = styled(Tabs.Root)`
-  background-color: red;
-`;
+const StyledTabs = styled(Tabs.Root)({
+  backgroundColor: "red"
+});
 
-const StyledTabList = styled(Tabs.List)`
-  background-color: blue;
-`;
+const StyledTabList = styled(Tabs.List)({ backgroundColor: "blue" });
 
+const Trigger = styled(Tabs.Trigger)``;
+
+const Content = styled(Tabs.Content)``;
+
+const Indicator = styled<Pick<Props, "orientation"> & ComponentParameters<typeof Tabs.Indicator>>(
+  Tabs.Indicator
+)((props) => ({
+  backgroundColor: "green",
+  // eslint-disable-next-line solid/reactivity
+  ...(props.orientation === "horizontal" ? { height: "2px" } : { width: "2px" })
+}));
+
+const tab__indicator = css`
+  background-color: green;
+  &[data-orientation="vertical"] {
+    width: 2px;
+  }
+
+  &[data-orientation="horizontal"] {
+    height: 2px;
+  }
+`;
 // コンポーネントの宣言が前後してもエラーがでないのか・・・？

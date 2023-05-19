@@ -6,10 +6,8 @@ import { Tab } from "./Tab";
 const meta = {
   title: "atoms/Tab",
   component: Tab,
-  tags: ["autodocs"],
-  argTypes: {
-    backgroundColor: { control: "color" }
-  }
+  // tags: ["autodocs"], // document を生成してくれるが、不要なのでオフ
+  argTypes: {}
 } satisfies Meta<typeof Tab>;
 
 export default meta;
@@ -19,6 +17,19 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     primary: true,
-    label: "Tab"
+    label: "Tab",
+    orientation: "horizontal",
+    tabList: [
+      {
+        value: "pomodoro",
+        label: "Pomodoro",
+        content: <h1>Hello Pomodoro</h1>
+      },
+      {
+        value: "timer",
+        label: "Timer",
+        content: <h1>Hello Timer</h1>
+      }
+    ]
   }
 };
