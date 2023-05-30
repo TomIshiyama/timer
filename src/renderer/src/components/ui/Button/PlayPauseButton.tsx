@@ -18,8 +18,7 @@ export const PlayPauseButton: Component<Props> = (props) => {
   return (
     <ButtonWrapper size={sizeMap[props.size] ?? sizeMap.medium}>
       {props.mode === "play" ? (
-        // <Play initialSize={sizeMap[props.size] ?? sizeMap.medium} />
-        <div />
+        <Play initialSize={sizeMap[props.size] ?? sizeMap.medium} />
       ) : (
         <Pause initialSize={sizeMap[props.size] ?? sizeMap.medium} />
       )}
@@ -63,4 +62,11 @@ const Pause = styled(PauseComponent)<{ initialSize: number }>((props) => ({
     height: "100%",
     width: `${props.initialSize / 20}px`
   }
+}));
+
+const Play = styled("div")<{ initialSize: number }>((props) => ({
+  transform: `translateX(${props.initialSize / 4}px)`,
+  borderTop: `${props.initialSize / 3}px solid transparent`,
+  borderBottom: `${props.initialSize / 3}px solid transparent`,
+  borderLeft: `${props.initialSize / 3}px solid dimgray`
 }));
