@@ -57,6 +57,7 @@
     "react-dom": "^18.2.0",
     "solid-js": "^1.6.16",
     "storybook": "^7.0.12",
+    "storybook-dark-mode": "^3.0.0",
     "storybook-solidjs": "^1.0.0-beta.2",
     "storybook-solidjs-vite": "^1.0.0-beta.2",
     "typescript": "^4.9.5",
