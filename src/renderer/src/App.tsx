@@ -1,34 +1,28 @@
-import { Component, useContext } from "solid-js";
-
-import { StateContext } from "./components/utility/StateProvider";
-import { Pomodoro } from "./components/page/pomodoro";
+import { Router, hashIntegration } from "@solidjs/router";
+import { Component } from "solid-js";
+import { Routes } from "./components/utility/Routes";
+import { StateProvider } from "./components/utility/StateProvider/StateProvider";
+import { TimeMovement } from "./components/utility/TimeMovement";
+import { Menu } from "./components/ui/Menu/Menu";
+import { COLOR } from "./utils/color";
 
 const App: Component = () => {
-  const { state, setState } = useContext(StateContext);
-
-  console.log(state.pomodoro.remainingTime);
-  console.log(state.pomodoro.isRunning);
-
   return (
-    <div>
-      <button
-        onClick={(): void => {
-          console.log("on click");
-          setState("pomodoro", "remainingTime", 1000 * 20);
-          setState("pomodoro", "isRunning", true);
-        }}
-      >
-        start
-      </button>
-
-      <Pomodoro
-        remainingTime={state.pomodoro.remainingTime}
-        isRunning={state.pomodoro.isRunning}
-        isFinished={state.pomodoro.isFinished}
-        isPaused={state.pomodoro.isPaused}
-        round={state.pomodoro.round}
-      />
-    </div>
+    <StateProvider>
+      <TimeMovement>
+        <Router source={hashIntegration()}>
+          <div style={{ display: "flex" }}>
+            <Menu />
+            <main
+              data-test={"main-content"}
+              style={{ width: "100%", background: `${COLOR.dark.base.background}` }}
+            >
+              <Routes />
+            </main>
+          </div>
+        </Router>
+      </TimeMovement>
+    </StateProvider>
   );
 };
 
