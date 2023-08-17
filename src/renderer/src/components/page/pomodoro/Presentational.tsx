@@ -1,21 +1,47 @@
 import { Component, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
-import { PomodoroProps } from "./type";
+import { PomodoroProps, TIMER_STATE_TRANSITION } from "./type";
 import { COLOR } from "../../../utils/color";
 import { PlayPauseButton } from "../../ui/Button/PlayPauseButton";
 import { getTimeWithObject } from "../../../utils/time";
+import { CircleCountDown } from "../../ui/CircleCountDown/CircleCountDown";
+import { SkipButton } from "../../ui/Button/SkipButton";
+import { SquareButton } from "../../ui/Button/SquareButton";
 
 export const PomodoroPresentational: Component<PomodoroProps> = (props) => {
   return (
     <Style>
-      <h1>Pomodoro</h1>
-      {props.isFinished ? (
-        <h1>Well Done!</h1>
+      {props.stateTransition === TIMER_STATE_TRANSITION.done ? (
+        <>
+          <h1>Well Done!</h1>
+          <button onClick={props.onClickInitialize}> GO BACK </button>
+        </>
       ) : (
         <>
-          <p>remaing : {`${props.round.current} / ${props.round.limit}`}</p>
-          <Remaining remainingTime={props.remainingTime} />
-          <PlayPauseButton size="large" mode={props.isPaused ? "pause" : "play"} />
+          {/* TODO: fix display position */}
+          <p>session: {`${props.section.current} / ${props.section.limit}`}</p>
+          <div>
+            <CircleCountDown
+              size={props.size ?? 400}
+              setTime={props.setTime}
+              remainingTime={props.remainingTime}
+            />
+          </div>
+          <div>
+            <PlayPauseButton
+              size="large"
+              mode={
+                props.stateTransition === TIMER_STATE_TRANSITION.pause ||
+                props.stateTransition === TIMER_STATE_TRANSITION.initial
+                  ? "play"
+                  : "pause"
+              }
+              onPlayClick={props.onClickPlay}
+              onPauseClick={props.onClickPause}
+            />
+            <SkipButton size={"large"} onClick={props.onClickSkip} />
+            <SquareButton size={"large"} onClick={props.onClickForceFinish} />
+          </div>
         </>
       )}
     </Style>
@@ -23,8 +49,10 @@ export const PomodoroPresentational: Component<PomodoroProps> = (props) => {
 };
 
 const Style = styled("div")((props) => ({
-  backgroundColor: COLOR.dark.base.background,
-  color: COLOR.dark.base.color
+  backgsectionColor: COLOR.dark.base.background,
+  color: COLOR.dark.base.color,
+  width: "100%",
+  height: "100%"
 }));
 
 const Remaining: Component<Pick<PomodoroProps, "remainingTime">> = (props) => {
