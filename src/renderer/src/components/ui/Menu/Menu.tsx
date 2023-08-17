@@ -2,7 +2,7 @@ import { Component } from "solid-js";
 import { Tab } from "../Tab/Tab";
 import { useNavigate } from "@solidjs/router";
 
-type Props = { wip: unknown };
+type Props = { wip?: unknown };
 
 const tabList = [
   { value: "/", label: "Home" },
