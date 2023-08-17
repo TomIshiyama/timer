@@ -1,6 +1,6 @@
 # timer
 
-An Electron application with Solid and TypeScript
+Electron application with Solid and TypeScript
 
 ## Project architecture
 
