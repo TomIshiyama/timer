@@ -95,6 +95,23 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     }));
   };
 
+  // HACK: create a constant for finished status
+  // When click the finish button
+  const forceFinish = (): void => {
+    // HACK: initial state
+    console.log("forceFinish", mockPomodoroTimer);
+    clearInterval(state.pomodoro.intervalId);
+    setState("pomodoro", {
+      status: TIMER_RUNNING_STATUS.work,
+      stateTransition: TIMER_STATE_TRANSITION.initial,
+      remainingTime: mockPomodoroTimer.remainingTime,
+      setTime: mockPomodoroTimer.setTime,
+      work: mockPomodoroTimer.work,
+      // work: 1500000,
+      section: mockPomodoroTimer.section,
+      intervalId: mockPomodoroTimer.intervalId
+    });
+  };
   return (
     <>
     </>
