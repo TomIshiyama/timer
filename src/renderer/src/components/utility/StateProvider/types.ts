@@ -1,7 +1,7 @@
-import { PomodoroProps } from "@renderer/components/page/pomodoro/type";
+import { PomodoroState } from "@renderer/components/page/pomodoro/type";
 
 export type State = {
-  pomodoro: PomodoroProps;
+  pomodoro: PomodoroState;
   timer: {
     remainingTime: number;
     isRunning: boolean;
