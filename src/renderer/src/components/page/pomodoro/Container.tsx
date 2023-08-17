@@ -53,6 +53,12 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     };
   });
 
+  const forceInitialize = (): void => {
+    setState("pomodoro", {
+      ...JSON.parse(JSON.stringify(mockPomodoroTimer))
+    });
+  };
+
   return (
     <>
     </>
