@@ -1632,6 +1632,11 @@
   resolved "https://registry.yarnpkg.com/@solid-primitives/utils/-/utils-6.1.1.tgz#8caeaff3c2feb3f9d41bd3d9a892c1286bc3a72c"
   integrity sha512-wxxUdxja126jTROs9Ro8Z5ExbHs9rv2Tl744S3Qmzki/gTcTXW8D1TvTArQcjqkCvSw8OIQ2EO2NI8sR28Trxg==
 
+"@solidjs/router@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@solidjs/router/-/router-0.8.2.tgz#3dd82fd052cb8654a2948989ed3e17cf6b25b04d"
+  integrity sha512-gUKW+LZqxtX6y/Aw6JKyy4gQ9E7dLqp513oB9pSYJR1HM5c56Pf7eijzyXX+b3WuXig18Cxqah4tMtF0YGu80w==
+
 "@storybook/addon-actions@7.0.12":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-7.0.12.tgz#61634c40073718cf02967f073df4595afd363521"

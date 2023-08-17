@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow } from "electron";
+import { app, shell, BrowserWindow, nativeImage, Tray, Menu, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
@@ -33,6 +33,14 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
+
+  // Load the local URL for development or the local
+  // html file for production
+  if (!app.isPackaged && process.env["ELECTRON_RENDERER_URL"]) {
+    mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
+  } else {
+    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
+  }
 }
 
 // This method will be called when Electron has finished
@@ -50,12 +58,31 @@ app.whenReady().then(() => {
   });
 
   createWindow();
+  ipcPing();
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  // tray example
+  const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
+  const tray = new Tray(icon);
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+    { label: "Item3", type: "radio", checked: true },
+    { label: "Item4", type: "radio" }
+  ]);
+
+  tray.setContextMenu(contextMenu);
+
+  tray.setToolTip("This is my application");
+  tray.setTitle("10:10");
+
+  ipcOnSetTrayTitle(tray);
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -66,6 +93,16 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+
+async function ipcPing(): Promise<void> {
+  ipcMain.handle("ping", () => "pong");
+}
+
+async function ipcOnSetTrayTitle(tray): Promise<void> {
+  ipcMain.on("getTrayTitle", (e, title) => {
+    tray.setTitle(title);
+  });
+}
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

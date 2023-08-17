@@ -1,8 +1,9 @@
-import { Component, For, createSignal } from "solid-js";
-import { css, styled } from "solid-styled-components";
 import { Tabs } from "@kobalte/core";
-import { JSX } from "solid-js/types/jsx";
 import { ComponentParameters } from "@renderer/utils/types";
+import { Component, For, createSignal } from "solid-js";
+import { JSX } from "solid-js/types/jsx";
+import { styled } from "solid-styled-components";
+import { COLOR, GRID } from "../../../utils/color";
 
 export const tabMenus = {
   pomodoro: "pomodoro",
@@ -17,7 +18,7 @@ type Props = {
   tabList: {
     value: string;
     label: JSX.Element;
-    content: JSX.Element;
+    content?: JSX.Element;
   }[];
   onChange?: (value: string) => void;
   orientation?: "horizontal" | "vertical";
@@ -30,58 +31,80 @@ export const Tab: Component<Props> = (props) => {
   );
 
   return (
-    <div>
-      <StyledTabs
-        // controlled value
-        value={selectedTab()}
-        onChange={(value): void => {
-          console.log(value);
-          setSelectedTab(value);
-          props.onChange?.(value);
-        }}
-        orientation={props.orientation ?? "horizontal"}
-        aria-label="Main navigation"
-      >
-        <StyledTabList>
-          <For each={props.tabList} fallback={<div>Loading...</div>}>
-            {(item): JSX.Element => <Trigger value={item.value}>{item.label}</Trigger>}
-          </For>
-          <Indicator orientation={props.orientation} />
-        </StyledTabList>
+    <StyledTabs
+      // controlled value
+      value={selectedTab()}
+      onChange={(value): void => {
+        console.log(value);
+        setSelectedTab(value);
+        props.onChange?.(value);
+      }}
+      orientation={props.orientation ?? "horizontal"}
+      aria-label="Main navigation"
+    >
+      <StyledTabList orientation={props.orientation}>
         <For each={props.tabList} fallback={<div>Loading...</div>}>
-          {(item): JSX.Element => <Content value={item.value}>{item.content}</Content>}
+          {(item): JSX.Element => <Trigger value={item.value}>{item.label}</Trigger>}
         </For>
-      </StyledTabs>
-    </div>
+        <Indicator orientation={props.orientation} />
+      </StyledTabList>
+      <For each={props.tabList} fallback={<div>Loading...</div>}>
+        {(item): JSX.Element =>
+          item.content && <Content value={item.value}>{item.content}</Content>
+        }
+      </For>
+    </StyledTabs>
   );
 };
 
-const StyledTabs = styled(Tabs.Root)({
-  backgroundColor: "red"
-});
+const StyledTabs = styled(Tabs.Root)((props) => ({
+  backgroundColor: COLOR.dark.tab.background,
+  display: "flex",
+  height: "100vh",
+  ...(props.orientation === "horizontal"
+    ? {
+        flexDirection: "column",
+        borderBottom: `1px solid ${COLOR.dark.tab.border}`
+      }
+    : {
+        flexDirection: "row",
+        borderRight: `1px solid ${COLOR.dark.tab.border}`
+      })
+}));
 
-const StyledTabList = styled(Tabs.List)({ backgroundColor: "blue" });
+const StyledTabList = styled(Tabs.List)<Pick<Props, "orientation">>((props) => ({
+  backgroundColor: COLOR.dark.tab.background,
+  display: "flex",
+  position: "relative",
+  // eslint-disable-next-line solid/reactivity
+  ...(props.orientation === "horizontal"
+    ? {}
+    : {
+        flexDirection: "column",
+        alignItems: "stretch"
+      })
+}));
 
-const Trigger = styled(Tabs.Trigger)``;
+const Trigger = styled(Tabs.Trigger)((props) => ({
+  backgroundColor: COLOR.dark.tab.background,
+  color: COLOR.dark.base.color,
+  border: "none",
+  padding: `${GRID.base}px`,
+  "&:hover": {
+    backgroundColor: COLOR.dark.tab.hover
+  }
+}));
 
 const Content = styled(Tabs.Content)``;
 
 const Indicator = styled<Pick<Props, "orientation"> & ComponentParameters<typeof Tabs.Indicator>>(
   Tabs.Indicator
 )((props) => ({
-  backgroundColor: "green",
+  backgroundColor: COLOR.dark.tab.indicator,
+  position: "absolute",
+  transition: "all .25s",
   // eslint-disable-next-line solid/reactivity
-  ...(props.orientation === "horizontal" ? { height: "2px" } : { width: "2px" })
+  ...(props.orientation === "horizontal"
+    ? { height: "2px", bottom: "-1px" }
+    : { width: "2px", left: "0" })
 }));
-
-const tab__indicator = css`
-  background-color: green;
-  &[data-orientation="vertical"] {
-    width: 2px;
-  }
-
-  &[data-orientation="horizontal"] {
-    height: 2px;
-  }
-`;
-// コンポーネントの宣言が前後してもエラーがでないのか・・・？
