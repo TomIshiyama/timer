@@ -24,6 +24,35 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     () => state.pomodoro.section.current === state.pomodoro.section.limit
   );
 
+  const getNextStatus = createMemo(() => {
+    if (isNextLongBreak()) return TIMER_RUNNING_STATUS.longBreak;
+    if (isNextShortBreak()) return TIMER_RUNNING_STATUS.shortBreak;
+    return TIMER_RUNNING_STATUS.work;
+  });
+
+  const getNextPomodoroParameters = createMemo(() => {
+    if (isNextLongBreak())
+      return {
+        status: TIMER_RUNNING_STATUS.longBreak,
+        // work: mockPomodoroTimer.longBreak, // FIXME: remove mockwork
+        setTime: mockPomodoroTimer.longBreak,
+        remainingTime: mockPomodoroTimer.longBreak
+      };
+
+    if (isNextShortBreak())
+      return {
+        status: TIMER_RUNNING_STATUS.shortBreak,
+        setTime: mockPomodoroTimer.shortBreak,
+        remainingTime: mockPomodoroTimer.shortBreak
+      };
+
+    return {
+      status: TIMER_RUNNING_STATUS.work,
+      setTime: mockPomodoroTimer.work,
+      remainingTime: mockPomodoroTimer.work
+    };
+  });
+
   return (
     <>
     </>
