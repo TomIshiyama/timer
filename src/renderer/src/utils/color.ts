@@ -9,17 +9,42 @@ export const SILVER = "#80858e";
 export const RED = "#b54441";
 export const YELLOW = "#eaca45";
 export const GREEN = "#5af387";
+
+// Semantic Colors
 export const COLOR = {
   dark: {
     base: {
-      background: "dimgray",
-      color: "whiteSmoke",
-      border: "whiteSmoke",
-      hover: "darkgray",
-      active: "darkgray"
+      background: DARK_GRAY,
+      color: WHITE,
+      border: WHITE,
+      hover: SILVER,
+      active: SILVER
     },
     button: {},
-    tab: {}
+    tab: {
+      indicator: GREEN,
+      background: DARK_GRAY,
+      hover: DIM_GRAY,
+      border: BLACK
+    },
+    input: {
+      border: SILVER,
+      borderError: RED,
+      color: WHITE,
+      background: DARK_GRAY,
+      label: WHITE_DARKER
+    },
+    select: {
+      border: SILVER,
+      borderError: RED,
+      color: WHITE,
+      background: "transparent"
+    }
   },
   light: {}
+};
+
+export const GRID = {
+  half: 8,
+  base: 16
 };
