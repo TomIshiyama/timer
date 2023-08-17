@@ -79,6 +79,22 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     window.electronAPI.setTrayTitle("pause");
   };
 
+  const goNextSection = (): void => {
+    clearInterval(state.pomodoro.intervalId);
+    setState("pomodoro", "intervalId", undefined);
+    setState("pomodoro", (prev) => ({
+      ...getNextPomodoroParameters(),
+      ...(isNextFinish() && { stateTransition: TIMER_STATE_TRANSITION.done }),
+      // after work section, section.current will be incremented
+      ...(state.pomodoro.status !== TIMER_RUNNING_STATUS.work && {
+        section: {
+          ...state.pomodoro.section,
+          current: state.pomodoro.section.current + 1
+        }
+      })
+    }));
+  };
+
   return (
     <>
     </>
