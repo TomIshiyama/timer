@@ -124,6 +124,22 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
 
   return (
     <>
+      <div>window dimensions : {JSON.stringify(getRect())}</div>
+      <div>state pomodoro : {JSON.stringify(state.pomodoro)}</div>
+      <PomodoroPresentational
+        // HACK: use spread syntax
+        setTime={state.pomodoro[state.pomodoro.status]}
+        status={state.pomodoro.status}
+        remainingTime={state.pomodoro.remainingTime}
+        stateTransition={state.pomodoro.stateTransition}
+        onClickPlay={onClickPlay}
+        onClickPause={onClickPause}
+        onClickSkip={goNextSection}
+        onClickForceFinish={forceFinish}
+        onClickInitialize={onClickInitialize}
+        section={state.pomodoro.section}
+        size={getRect().width < getRect().height ? getRect().width / 1.5 : getRect().height / 1.5}
+      />
     </>
   );
 };
