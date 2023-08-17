@@ -59,6 +59,14 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     });
   };
 
+  // handlers
+  const onClickPlay = (): void => {
+    // setState("pomodoro", "isRunning", true);
+    setState("pomodoro", "stateTransition", TIMER_STATE_TRANSITION.running);
+    const title = getTimeLiteral(state.pomodoro.remainingTime);
+    window.electronAPI.setTrayTitle(title);
+  };
+
   return (
     <>
     </>
