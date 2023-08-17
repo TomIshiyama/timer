@@ -67,6 +67,18 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     window.electronAPI.setTrayTitle(title);
   };
 
+  const onClickPause = (): void => {
+    console.log("onClickPause");
+    clearInterval(state.pomodoro.intervalId);
+    setState("pomodoro", {
+      stateTransition: TIMER_STATE_TRANSITION.pause,
+      // [state.pomodoro.status]: state.pomodoro.remainingTime,
+      setTime: state.pomodoro.remainingTime,
+      intervalId: undefined
+    });
+    window.electronAPI.setTrayTitle("pause");
+  };
+
   return (
     <>
     </>
