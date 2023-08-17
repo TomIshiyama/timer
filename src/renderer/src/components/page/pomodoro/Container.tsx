@@ -1,6 +1,10 @@
-import { Component } from "solid-js";
-import { PomodoroProps } from "./type";
+import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
+import { Component, createMemo, useContext } from "solid-js";
+import { getTimeLiteral } from "../../../utils/time";
+import { useWindowRect } from "../../../utils/useWindowRect";
+import { mockPomodoroTimer } from "../../utility/StateProvider/StateProvider";
 import { PomodoroPresentational } from "./Presentational";
+import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
 
 export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { state, setState } = useContext(StateContext);
@@ -8,6 +12,7 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { getRect } = useWindowRect();
 
   // HACK: create a new file for usePomodoroTimer hooks
+
   const isNextShortBreak = createMemo(
     () =>
       state.pomodoro.status === TIMER_RUNNING_STATUS.work &&
@@ -112,6 +117,11 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       intervalId: mockPomodoroTimer.intervalId
     });
   };
+
+  const onClickInitialize = (): void => {
+    forceInitialize();
+  };
+
   return (
     <>
     </>
