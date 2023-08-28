@@ -15,7 +15,10 @@ const App: Component = () => {
             <Menu />
             <main
               data-test={"main-content"}
-              style={{ width: "100%", background: `${COLOR.dark.base.background}` }}
+              style={{
+                width: "100%",
+                background: `${COLOR.dark.base.background}`
+              }}
             >
               <Routes />
             </main>
