@@ -14,6 +14,8 @@ type Props = {
   defaultValue?: number | string;
   placeholder?: string;
   onChange?: JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined;
+  min?: number;
+  max?: number;
 };
 
 const InputComponent: Component<Props> = (props) => {
@@ -27,6 +29,8 @@ const InputComponent: Component<Props> = (props) => {
         value={props.value ?? props.defaultValue}
         onChange={props.onChange}
         placeholder={props.placeholder}
+        min={props.min}
+        max={props.max}
       />
     </TextField.Root>
   );
