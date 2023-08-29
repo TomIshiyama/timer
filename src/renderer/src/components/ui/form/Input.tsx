@@ -13,7 +13,7 @@ type Props = {
   value?: number | string;
   defaultValue?: number | string;
   placeholder?: string;
-  onChange?: JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined;
+  onChange?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   min?: number;
   max?: number;
 };
