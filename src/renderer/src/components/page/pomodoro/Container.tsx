@@ -1,8 +1,7 @@
 import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
-import { Component, createMemo, useContext } from "solid-js";
+import { Component, createMemo, onMount, useContext } from "solid-js";
 import { getTimeLiteral } from "../../../utils/time";
 import { useWindowRect } from "../../../utils/useWindowRect";
-import { mockPomodoroTimer } from "../../utility/StateProvider/StateProvider";
 import { PomodoroPresentational } from "./Presentational";
 import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
 
@@ -21,8 +20,7 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
 
   const isNextLongBreak = createMemo(
     () =>
-      state.pomodoro.section.current % mockPomodoroTimer.longBreakInterval === 0 &&
-      isNextShortBreak()
+      state.pomodoro.section.current % state.pomodoro.longBreakInterval === 0 && isNextShortBreak()
   );
 
   const isNextFinish = createMemo(
@@ -39,30 +37,23 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
     if (isNextLongBreak())
       return {
         status: TIMER_RUNNING_STATUS.longBreak,
-        // work: mockPomodoroTimer.longBreak, // FIXME: remove mockwork
-        setTime: mockPomodoroTimer.longBreak,
-        remainingTime: mockPomodoroTimer.longBreak
+        setTime: state.pomodoro.longBreak,
+        remainingTime: state.pomodoro.longBreak
       };
 
     if (isNextShortBreak())
       return {
         status: TIMER_RUNNING_STATUS.shortBreak,
-        setTime: mockPomodoroTimer.shortBreak,
-        remainingTime: mockPomodoroTimer.shortBreak
+        setTime: state.pomodoro.shortBreak,
+        remainingTime: state.pomodoro.shortBreak
       };
 
     return {
       status: TIMER_RUNNING_STATUS.work,
-      setTime: mockPomodoroTimer.work,
-      remainingTime: mockPomodoroTimer.work
+      setTime: state.pomodoro.work,
+      remainingTime: state.pomodoro.work
     };
   });
-
-  const forceInitialize = (): void => {
-    setState("pomodoro", {
-      ...JSON.parse(JSON.stringify(mockPomodoroTimer))
-    });
-  };
 
   // handlers
   const onClickPlay = (): void => {
@@ -104,23 +95,42 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   // When click the finish button
   const forceFinish = (): void => {
     // HACK: initial state
-    console.log("forceFinish", mockPomodoroTimer);
     clearInterval(state.pomodoro.intervalId);
     setState("pomodoro", {
       status: TIMER_RUNNING_STATUS.work,
       stateTransition: TIMER_STATE_TRANSITION.initial,
-      remainingTime: mockPomodoroTimer.remainingTime,
-      setTime: mockPomodoroTimer.setTime,
-      work: mockPomodoroTimer.work,
-      // work: 1500000,
-      section: mockPomodoroTimer.section,
-      intervalId: mockPomodoroTimer.intervalId
+      // HACK: there is the same code on StateProvider
+      work: state.preference.work,
+      remainingTime: state.preference.work,
+      setTime: state.preference.work,
+      shortBreak: state.preference.shortBreak,
+      longBreak: state.preference.longBreak,
+      longBreakInterval: state.preference.longBreakInterval,
+      section: { current: 1, limit: state.preference.sectionLimit },
+      intervalId: undefined
     });
   };
 
   const onClickInitialize = (): void => {
-    forceInitialize();
+    // forceInitialize();
+    forceFinish();
   };
+
+  // when transition is "initial", move latest preference settings to pomodoro state.
+  onMount(() => {
+    if (state.pomodoro.stateTransition !== TIMER_STATE_TRANSITION.initial) return;
+    console.log("pomodoro rendered");
+    setState("pomodoro", {
+      ...state.pomodoro,
+      work: state.preference.work,
+      remainingTime: state.preference.work,
+      setTime: state.preference.work,
+      shortBreak: state.preference.shortBreak,
+      longBreak: state.preference.longBreak,
+      longBreakInterval: state.preference.longBreakInterval,
+      section: { ...state.pomodoro.section, limit: state.preference.sectionLimit }
+    });
+  });
 
   return (
     <>
