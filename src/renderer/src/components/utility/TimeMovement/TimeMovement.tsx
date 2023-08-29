@@ -1,6 +1,6 @@
 import { Component, JSX, createEffect, onCleanup, useContext } from "solid-js";
 import { TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "../../page/pomodoro/type";
-import { StateContext, mockPomodoroTimer } from "../StateProvider/StateProvider";
+import { StateContext } from "../StateProvider/StateProvider";
 
 const INTERVAL_DELAY = 1000;
 
@@ -9,8 +9,6 @@ type Props = {
 };
 
 export const TimeMovement: Component<Props> = (props) => {
-  console.log("state provider");
-
   // HACK: 呼び出すWrapper を設けても良い
   const { state, setState } = useContext(StateContext);
 
@@ -41,37 +39,43 @@ export const TimeMovement: Component<Props> = (props) => {
           return;
         }
 
+        // to prevent having more than a one timer ID.
+        clearInterval(state.pomodoro.intervalId);
+        setState("pomodoro", "intervalId", undefined);
+
         // when have not achieved, count number of the section up.
         if (state.pomodoro.status === TIMER_RUNNING_STATUS.work) {
           setState("pomodoro", "section", "current", (prev) => prev + 1);
 
           // check if the next sections is long break
-          if (state.pomodoro.section.current % mockPomodoroTimer.longBreakInterval === 0) {
+          if (state.pomodoro.section.current % state.pomodoro.longBreakInterval === 0) {
             setState("pomodoro", (prev) => ({
               ...prev,
               status: TIMER_RUNNING_STATUS.longBreak,
-              setTime: mockPomodoroTimer.longBreak,
-              // work: mockPomodoroTimer.longBreak, // FIXME: remove mockwork
-              remainingTime: mockPomodoroTimer.longBreak
+              setTime: state.pomodoro.longBreak,
+              remainingTime: state.pomodoro.longBreak
             }));
           } else {
             setState("pomodoro", (prev) => ({
               ...prev,
               status: TIMER_RUNNING_STATUS.shortBreak,
-              // work: mockPomodoroTimer.shortBreak, // FIXME: remove mockwork
-              setTime: mockPomodoroTimer.shortBreak,
-              remainingTime: mockPomodoroTimer.shortBreak
+              setTime: state.pomodoro.shortBreak,
+              remainingTime: state.pomodoro.shortBreak
             }));
           }
         } else {
           // when have finished a short or long break time
           // set work status
+
           setState("pomodoro", (prev) => ({
             ...prev,
             status: TIMER_RUNNING_STATUS.work,
-            setTime: mockPomodoroTimer.work,
-            // work: mockPomodoroTimer.work, // FIXME: remove mockwork
-            remainingTime: mockPomodoroTimer.work
+            setTime: state.pomodoro.work,
+            remainingTime: state.pomodoro.work,
+            section: {
+              limit: state.pomodoro.section.limit,
+              current: state.pomodoro.section.current + 1
+            }
           }));
         }
       }
