@@ -1,9 +1,10 @@
 import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
-import { Component, createMemo, onMount, useContext } from "solid-js";
+import { Component, onMount, useContext } from "solid-js";
 import { getTimeLiteral } from "../../../utils/time";
 import { useWindowRect } from "../../../utils/useWindowRect";
 import { PomodoroPresentational } from "./Presentational";
 import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
+import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
 
 export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { state, setState } = useContext(StateContext);
@@ -11,49 +12,7 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { getRect } = useWindowRect();
 
   // HACK: create a new file for usePomodoroTimer hooks
-
-  const isNextShortBreak = createMemo(
-    () =>
-      state.pomodoro.status === TIMER_RUNNING_STATUS.work &&
-      state.pomodoro.section.current < state.pomodoro.section.limit
-  );
-
-  const isNextLongBreak = createMemo(
-    () =>
-      state.pomodoro.section.current % state.pomodoro.longBreakInterval === 0 && isNextShortBreak()
-  );
-
-  const isNextFinish = createMemo(
-    () => state.pomodoro.section.current === state.pomodoro.section.limit
-  );
-
-  const getNextStatus = createMemo(() => {
-    if (isNextLongBreak()) return TIMER_RUNNING_STATUS.longBreak;
-    if (isNextShortBreak()) return TIMER_RUNNING_STATUS.shortBreak;
-    return TIMER_RUNNING_STATUS.work;
-  });
-
-  const getNextPomodoroParameters = createMemo(() => {
-    if (isNextLongBreak())
-      return {
-        status: TIMER_RUNNING_STATUS.longBreak,
-        setTime: state.pomodoro.longBreak,
-        remainingTime: state.pomodoro.longBreak
-      };
-
-    if (isNextShortBreak())
-      return {
-        status: TIMER_RUNNING_STATUS.shortBreak,
-        setTime: state.pomodoro.shortBreak,
-        remainingTime: state.pomodoro.shortBreak
-      };
-
-    return {
-      status: TIMER_RUNNING_STATUS.work,
-      setTime: state.pomodoro.work,
-      remainingTime: state.pomodoro.work
-    };
-  });
+  const { getNextPomodoroParameters, isNextFinish } = useTimeMovement();
 
   // handlers
   const onClickPlay = (): void => {
@@ -112,7 +71,6 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   };
 
   const onClickInitialize = (): void => {
-    // forceInitialize();
     forceFinish();
   };
 
