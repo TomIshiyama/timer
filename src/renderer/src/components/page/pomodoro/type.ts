@@ -53,5 +53,5 @@ export type PomodoroState = {
   stateTransition: PomodoroStateTransition;
   section: Section;
   intervalId: number | undefined;
-  futureTime?: number;
+  futureTime: number;
 };
