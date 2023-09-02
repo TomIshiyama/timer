@@ -44,7 +44,7 @@ export const Input = styled(InputComponent)((props) => ({
   } `,
   "& > label": {
     color: COLOR.dark.input.label,
-    fontSize: "0.6em",
+    fontSize: "0.8em",
     paddingBottom: "4px"
   },
   "& > input": {
