@@ -13,7 +13,9 @@ type Props = {
   value?: number | string;
   defaultValue?: number | string;
   placeholder?: string;
-  onChange?: JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined;
+  onChange?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
+  min?: number;
+  max?: number;
 };
 
 const InputComponent: Component<Props> = (props) => {
@@ -27,6 +29,8 @@ const InputComponent: Component<Props> = (props) => {
         value={props.value ?? props.defaultValue}
         onChange={props.onChange}
         placeholder={props.placeholder}
+        min={props.min}
+        max={props.max}
       />
     </TextField.Root>
   );
@@ -40,7 +44,7 @@ export const Input = styled(InputComponent)((props) => ({
   } `,
   "& > label": {
     color: COLOR.dark.input.label,
-    fontSize: "0.6em",
+    fontSize: "0.8em",
     paddingBottom: "4px"
   },
   "& > input": {
