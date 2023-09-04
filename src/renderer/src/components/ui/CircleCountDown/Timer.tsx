@@ -2,6 +2,7 @@ import { Component, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
 import * as CSS from "csstype";
 import { JSX } from "solid-js";
+import { COLOR } from "../../../utils/color";
 
 type TimerProps = {
   minutes: number;
@@ -34,14 +35,12 @@ const Wrapper = styled("button")<Pick<TimerProps, "size" | "style">>((props) => 
   width: `${props.size}px`,
   height: `${props.size * (9 / 21)}px`,
   padding: `${props.size / 20}px`,
-  color: "whitesmoke",
+  color: COLOR.dark.base.color,
   backgroundColor: "transparent",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   fontFamily: "'NotoSansJP', 'Nunito Sans'",
-  position: "absolute",
-  zIndex: 6,
   fontWeight: 100,
   border: "none"
 }));

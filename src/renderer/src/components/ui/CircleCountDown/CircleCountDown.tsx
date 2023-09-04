@@ -3,12 +3,14 @@ import { styled } from "solid-styled-components";
 import { Timer } from "./Timer";
 import { getTimeWithoutHours } from "../../../utils/time";
 import { JSX } from "solid-js";
+import { COLOR } from "../../../utils/color";
 
 type CircleCountDownProps = {
   size: number;
   setTime: number;
   remainingTime: number;
   mode?: "play" | "pause";
+  status?: string;
   onClickTimer?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>;
 };
 
@@ -38,12 +40,15 @@ export const CircleCountDown: Component<CircleCountDownProps> = (props) => {
         <SemiCircle size={props.size} />
         <SemiCircle size={props.size} />
         <OutermostCircle size={props.size} />
-        <Timer
-          onClick={props.onClickTimer}
-          minutes={time().minutes}
-          seconds={time().seconds}
-          size={props.size}
-        />
+        <InnerContents size={props.size}>
+          <Timer
+            onClick={props.onClickTimer}
+            minutes={time().minutes}
+            seconds={time().seconds}
+            size={props.size}
+          />
+          {props.status && <p>{props.status}</p>}
+        </InnerContents>
       </CircleContainer>
     </Wrapper>
   );
@@ -58,12 +63,15 @@ const center = {
 const CircleContainer = styled("div")<Pick<CircleCountDownProps, "size">>((props) => ({
   width: `${props.size}px`,
   height: `${props.size}px`,
-  backgroundColor: "whitesmoke",
+  backgroundColor: COLOR.dark.circleCountDown.background,
   borderRadius: "50%",
   position: "absolute",
   zIndex: 1,
   overflow: "hidden",
-  ...center
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
+  // ...center
 }));
 
 const SemiCircle = styled("div")<Pick<CircleCountDownProps, "size">>((props) => ({
@@ -73,23 +81,22 @@ const SemiCircle = styled("div")<Pick<CircleCountDownProps, "size">>((props) => 
   top: 0,
   left: 0,
   transformOrigin: "100% 50%",
-
   "&:nth-child(1)": {
-    backgroundColor: "orange",
+    backgroundColor: COLOR.dark.circleCountDown.indicator,
     zIndex: 2
   },
   "&:nth-child(2)": {
-    backgroundColor: "orange",
+    backgroundColor: COLOR.dark.circleCountDown.indicator,
     zIndex: 3
   },
   "&:nth-child(3)": {
-    backgroundColor: "whitesmoke",
+    backgroundColor: COLOR.dark.circleCountDown.background,
     zIndex: 4
   }
 }));
 
 const OutermostCircle = styled("div")<Pick<CircleCountDownProps, "size">>((props) => ({
-  backgroundColor: "black",
+  backgroundColor: COLOR.dark.circleCountDown.black,
   width: `${props.size * 0.975}px`,
   height: `${props.size * 0.975}px`,
   borderRadius: "50%",
@@ -101,4 +108,13 @@ const OutermostCircle = styled("div")<Pick<CircleCountDownProps, "size">>((props
 const Wrapper = styled("div")<Pick<CircleCountDownProps, "size">>((props) => ({
   width: `${props.size}px`,
   height: `${props.size}px`
+}));
+
+const InnerContents = styled("div")<Pick<CircleCountDownProps, "size">>((props) => ({
+  position: "absolute",
+  zIndex: 6,
+  "& > p": {
+    fontSize: `${Math.round(props.size / 16)}px`,
+    textAlign: "center"
+  }
 }));
