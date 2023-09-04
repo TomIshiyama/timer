@@ -20,6 +20,7 @@ type Props = {
     label: JSX.Element;
     content?: JSX.Element;
   }[];
+  disableBorder?: boolean;
   onChange?: (value: string) => void;
   orientation?: "horizontal" | "vertical";
 };
@@ -29,7 +30,6 @@ export const Tab: Component<Props> = (props) => {
     // eslint-disable-next-line solid/reactivity
     props.defaultValue ?? props.tabList[0].value
   );
-
   return (
     <StyledTabs
       // controlled value
@@ -57,18 +57,18 @@ export const Tab: Component<Props> = (props) => {
   );
 };
 
-const StyledTabs = styled(Tabs.Root)((props) => ({
+const StyledTabs = styled(Tabs.Root)<Pick<Props, "disableBorder">>((props) => ({
   backgroundColor: COLOR.dark.tab.background,
   display: "flex",
   height: "100vh",
   ...(props.orientation === "horizontal"
     ? {
         flexDirection: "column",
-        borderBottom: `1px solid ${COLOR.dark.tab.border}`
+        borderBottom: props.disableBorder ? "none" : `1px solid ${COLOR.dark.tab.border}`
       }
     : {
         flexDirection: "row",
-        borderRight: `1px solid ${COLOR.dark.tab.border}`
+        borderRight: props.disableBorder ? "none" : `1px solid ${COLOR.dark.tab.border}`
       })
 }));
 
@@ -89,7 +89,8 @@ const Trigger = styled(Tabs.Trigger)((props) => ({
   backgroundColor: COLOR.dark.tab.background,
   color: COLOR.dark.base.color,
   border: "none",
-  padding: `${GRID.base}px`,
+  padding: `${GRID.base / 2}px ${GRID.base / 2}px`,
+  cursor: "pointer",
   "&:hover": {
     backgroundColor: COLOR.dark.tab.hover
   }
