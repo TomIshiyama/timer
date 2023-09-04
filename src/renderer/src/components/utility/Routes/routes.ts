@@ -14,7 +14,7 @@ type Routes = {
 };
 
 export const routes = {
-  home: { path: "/", component: Home },
+  // home: { path: "/", component: Home },
   pomodoro: { path: "/pomodoro", component: Pomodoro as Component },
   preference: { path: "/preference", component: Preference as Component }
   //   alarm:{ path: "/alarm", component={}} ,

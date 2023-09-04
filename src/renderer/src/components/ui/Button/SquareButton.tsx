@@ -3,12 +3,14 @@ import { styled } from "solid-styled-components";
 import { ButtonWrapper } from "./PlayPauseButton";
 
 type Props = {
-  size: "small" | "medium" | "large";
+  size: "atom" | "small" | "medium" | "large";
+  color?: string;
   onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> | undefined;
 };
 
 // HACK: refactoring with common variable
 const sizeMap = {
+  atom: 26,
   small: 32,
   medium: 48,
   large: 64
@@ -26,7 +28,7 @@ export const SquareButton = styled(SquareButtonComponent)<Props>((props) => ({
   width: `${sizeMap[props.size] / 2.2}px`,
   height: `${sizeMap[props.size] / 2.2}px`,
   borderRadius: "2px",
-  backgroundColor: "dimgray",
+  backgroundColor: props.color ?? "dimgray",
   position: "relative",
   margin: "0 auto"
 }));

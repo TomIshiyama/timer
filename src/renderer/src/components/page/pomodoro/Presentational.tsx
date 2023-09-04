@@ -1,62 +1,63 @@
 import { Component, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
-import { PomodoroProps, TIMER_STATE_TRANSITION } from "./type";
-import { COLOR } from "../../../utils/color";
-import { PlayPauseButton } from "../../ui/Button/PlayPauseButton";
+import { COLOR, WHITE } from "../../../utils/color";
 import { getTimeWithObject } from "../../../utils/time";
+import { BaseButton } from "../../ui/Button/BackButton";
 import { CircleCountDown } from "../../ui/CircleCountDown/CircleCountDown";
-import { SkipButton } from "../../ui/Button/SkipButton";
-import { SquareButton } from "../../ui/Button/SquareButton";
-import { Container } from "../../ui/Container/Container";
+import { Wrapper } from "../../ui/Container/Container";
+import { FooterToolbar } from "../../ui/FooterToolbar/FooterToolbar";
+import { PomodoroProps, TIMER_STATE_TRANSITION } from "./type";
 
 export const PomodoroPresentational: Component<PomodoroProps> = (props) => {
   return (
-    <Container>
-      <Style>
-        <h2>Pomodoro timer</h2>
+    <Wrapper bgcolor={COLOR.dark.pomodoro[props.status]}>
+      <PomodoroInner>
         {props.stateTransition === TIMER_STATE_TRANSITION.done ? (
           <>
             <h1>Well Done!</h1>
-            <button onClick={props.onClickInitialize}> GO BACK </button>
+            <BaseButton onClick={props.onClickInitialize}> GO BACK </BaseButton>
           </>
         ) : (
           <>
             {/* TODO: fix display position */}
-            <p>session: {`${props.section.current} / ${props.section.limit}`}</p>
+            <p>{`${props.section.current} / ${props.section.limit}`}</p>
             <div>
               <CircleCountDown
                 size={props.size ?? 400}
                 setTime={props.setTime}
                 remainingTime={props.remainingTime}
+                status={props.status}
               />
-            </div>
-            <div>
-              <PlayPauseButton
-                size="large"
-                mode={
-                  props.stateTransition === TIMER_STATE_TRANSITION.pause ||
-                  props.stateTransition === TIMER_STATE_TRANSITION.initial
-                    ? "play"
-                    : "pause"
-                }
-                onPlayClick={props.onClickPlay}
-                onPauseClick={props.onClickPause}
-              />
-              <SkipButton size={"large"} onClick={props.onClickSkip} />
-              <SquareButton size={"large"} onClick={props.onClickForceFinish} />
             </div>
           </>
         )}
-      </Style>
-    </Container>
+      </PomodoroInner>
+      <FooterToolbar
+        mode={
+          props.stateTransition === TIMER_STATE_TRANSITION.pause ||
+          props.stateTransition === TIMER_STATE_TRANSITION.initial
+            ? "play"
+            : "pause"
+        }
+        color={WHITE}
+        onClickPlay={props.onClickPlay}
+        onClickPause={props.onClickPause}
+        onClickSkip={props.onClickSkip}
+        onClickForceFinish={props.onClickForceFinish}
+      />
+    </Wrapper>
   );
 };
 
-const Style = styled("div")((props) => ({
+const PomodoroInner = styled("div")((props) => ({
   backgsectionColor: COLOR.dark.base.background,
   color: COLOR.dark.base.color,
   width: "100%",
-  height: "100%"
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center"
 }));
 
 const Remaining: Component<Pick<PomodoroProps, "remainingTime">> = (props) => {
