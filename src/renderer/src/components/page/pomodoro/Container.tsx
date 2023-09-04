@@ -92,8 +92,8 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
 
   return (
     <>
-      <div>window dimensions : {JSON.stringify(getRect())}</div>
-      <div>state pomodoro : {JSON.stringify(state.pomodoro)}</div>
+      {/* <div>window dimensions : {JSON.stringify(getRect())}</div>
+      <div>state pomodoro : {JSON.stringify(state.pomodoro)}</div> */}
       <PomodoroPresentational
         // HACK: use spread syntax
         setTime={state.pomodoro[state.pomodoro.status]}
