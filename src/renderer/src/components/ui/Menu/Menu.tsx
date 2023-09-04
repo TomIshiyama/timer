@@ -1,31 +1,18 @@
-import { Component, createSignal, onMount } from "solid-js";
-import { Tab } from "../Tab/Tab";
 import { useNavigate } from "@solidjs/router";
-import { readFileSync } from "fs";
-import { IconTomatoSVG } from "../../../assets/IconTomatoSVG";
-import { IconGearSVG } from "../../../assets/IconGearSVG";
-import { BackButton } from "../Button/BackButton";
-import { COLOR } from "../../../utils/color";
+import { Component, createSignal, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
+import { IconGearSVG } from "../../../assets/IconGearSVG";
+import { IconTomatoSVG } from "../../../assets/IconTomatoSVG";
+import { COLOR } from "../../../utils/color";
+import { Tab } from "../Tab/Tab";
+import { routes } from "@renderer/components/utility/Routes/routes";
 
 type Props = { wip?: unknown };
-
-const tabList = [
-  { value: "/", label: "Home" },
-  {
-    value: "/pomodoro", // should set URL path
-    label: "Pomodoro" // should use icon
-  },
-  {
-    value: "/preference",
-    label: "Preference" // should use icon
-  }
-];
 
 const tabListWithIcon = [
   // { value: "/", label: "Home" },
   {
-    value: "/pomodoro", // should set URL path
+    value: routes.pomodoro.path,
     label: (
       <>
         <IconTomatoSVG /> Pomodoro
@@ -33,7 +20,7 @@ const tabListWithIcon = [
     ) // should use icon
   },
   {
-    value: "/preference",
+    value: routes.preference.path,
     label: (
       <>
         <IconGearSVG /> Preference
@@ -45,20 +32,12 @@ const tabListWithIcon = [
 const tabListOnlyIcon = [
   // { value: "/", label: "Home" },
   {
-    value: "/pomodoro", // should set URL path
-    label: (
-      <>
-        <IconTomatoSVG />
-      </>
-    ) // should use icon
+    value: routes.pomodoro.path,
+    label: <IconTomatoSVG />
   },
   {
-    value: "/preference",
-    label: (
-      <>
-        <IconGearSVG />
-      </>
-    )
+    value: routes.preference.path,
+    label: <IconGearSVG />
   }
 ];
 
