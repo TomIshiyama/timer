@@ -9,6 +9,12 @@ export const SILVER = "#80858e";
 export const RED = "#b54441";
 export const YELLOW = "#eaca45";
 export const GREEN = "#5af387";
+export const SKY_BLUE = "";
+export const DEEP_BLUE = "";
+export const SKY_GREEN = "#A5D9B7";
+export const DEEP_GREEN = "378E55";
+export const GREEN_DARK = "#5D8C6D";
+export const BROWN_DARK = "#5D8C6D";
 
 // Semantic Colors
 export const COLOR = {
@@ -20,7 +26,13 @@ export const COLOR = {
       hover: SILVER,
       active: SILVER
     },
-    button: {},
+    button: {
+      background: WHITE,
+      color: DARK_GRAY,
+      hover: {
+        background: WHITE_DARKER
+      }
+    },
     tab: {
       indicator: GREEN,
       background: DARK_GRAY,
@@ -39,6 +51,19 @@ export const COLOR = {
       borderError: RED,
       color: WHITE,
       background: "transparent"
+    },
+    circleCountDown: {
+      indicator: YELLOW,
+      background: WHITE,
+      black: BLACK
+    },
+    pomodoro: {
+      work: DARK_GRAY,
+      shortBreak: GREEN_DARK, // TODO: something to be good.
+      longBreak: BROWN_DARK
+    },
+    footer: {
+      border: SILVER
     }
   },
   light: {}
