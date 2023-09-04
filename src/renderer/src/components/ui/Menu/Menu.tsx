@@ -43,12 +43,18 @@ const tabListOnlyIcon = [
 
 export const Menu: Component<Props> = (_) => {
   const navigate = useNavigate();
-  const [getOpen, setOpen] = createSignal(true);
+  const [getOpen, setOpen] = createSignal(false);
   onMount(() => {
     navigate("/pomodoro");
   });
   return (
-    <div style={{ position: "relative", "border-right": `1px solid ${COLOR.dark.footer.border}` }}>
+    <div
+      style={{
+        position: "relative",
+        background: `${COLOR.dark.base.background}`,
+        "border-right": `1px solid ${COLOR.dark.footer.border}`
+      }}
+    >
       <Tab
         disableBorder
         tabList={getOpen() ? tabListWithIcon : tabListOnlyIcon}
