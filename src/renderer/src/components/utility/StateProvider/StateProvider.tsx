@@ -1,4 +1,4 @@
-import { createContext, onCleanup, onMount } from "solid-js";
+import { createContext, onMount } from "solid-js";
 import { SetStoreFunction, Store, createStore } from "solid-js/store";
 import { JSX } from "solid-js";
 import { State } from "./types";
@@ -40,6 +40,7 @@ const initialState: State = {
 
 // This mounting is for setting initial state with indexedDB
 export async function fetchState(): Promise<State> {
+  // get setting data from indexedDB
   const initPreference = await db.preference.get({ id: "preference" });
 
   if (initPreference == null) {
@@ -50,6 +51,7 @@ export async function fetchState(): Promise<State> {
   }
   const { sectionLimit, ...preference } =
     initPreference == null ? DEFAULT_VALUES : omit(initPreference, "id");
+
   console.log("pre", preference);
   return {
     pomodoro: {
@@ -60,6 +62,7 @@ export async function fetchState(): Promise<State> {
       longBreakInterval: preference.longBreakInterval,
       remainingTime: preference.work,
       setTime: preference.work,
+      futureTime: 0,
       section: {
         current: 1,
         limit: sectionLimit
