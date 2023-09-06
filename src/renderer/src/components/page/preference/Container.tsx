@@ -5,16 +5,17 @@ import { omit } from "../../../utils/util";
 import { StateContext } from "../../utility/StateProvider/StateProvider";
 import { Presentational } from "./Presentational";
 import { DEFAULT_VALUES } from "./const";
-import { PreferenceProps, Values } from "./type";
+import { PreferenceProps, PreferenceState, Values } from "./type";
 
-const INIT_VALUES = unixToMinutes(DEFAULT_VALUES, ["sectionLimit", "longBreakInterval"]);
+const pickValue: (keyof PreferenceState)[] = ["work", "shortBreak", "longBreak"];
 
+const INIT_VALUES = unixToMinutes(DEFAULT_VALUES, pickValue);
 export const PreferenceContainer: Component<PreferenceProps> = (props) => {
   const [getValues, setValues] = createSignal<Values>(INIT_VALUES);
   const { state, setState } = useContext(StateContext);
 
   // HACK: type definition.
-  const onChangeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
+  const onChangeTimeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
     console.log(getValues());
     setValues(
       (prev) =>
@@ -25,11 +26,8 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     );
     console.log(getValues());
     //
-    db.preference.update(
-      "preference",
-      minutesToUnix(getValues(), ["sectionLimit", "longBreakInterval"])
-    );
-    setState("preference", minutesToUnix(getValues(), ["sectionLimit", "longBreakInterval"]));
+    db.preference.update("preference", minutesToUnix(getValues(), pickValue));
+    setState("preference", minutesToUnix(getValues(), pickValue));
   };
 
   const onChangeSectionValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
@@ -68,9 +66,7 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
         });
       }
       setValues(
-        initialValues == null
-          ? DEFAULT_VALUES
-          : unixToMinutes(omit(initialValues, "id"), ["sectionLimit", "longBreakInterval"])
+        initialValues == null ? DEFAULT_VALUES : unixToMinutes(omit(initialValues, "id"), pickValue)
       );
     } catch (e) {
       console.error(e);
