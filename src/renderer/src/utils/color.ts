@@ -2,6 +2,7 @@
 // Primitive Colors
 export const BLACK = "#151e1c";
 export const DARK_GRAY = "#303f3d";
+export const DARK_GRAY_TRANSPARENT = "#202f2d55";
 export const DIM_GRAY = "#445956";
 export const WHITE = "#d4d8e1";
 export const WHITE_DARKER = "#b8bbc3";
@@ -21,6 +22,7 @@ export const COLOR = {
   dark: {
     base: {
       background: DARK_GRAY,
+      backgroundWrapper: DARK_GRAY_TRANSPARENT,
       color: WHITE,
       border: WHITE,
       hover: SILVER,
@@ -53,7 +55,7 @@ export const COLOR = {
       background: "transparent"
     },
     circleCountDown: {
-      indicator: YELLOW,
+      indicator: GREEN,
       background: WHITE,
       black: BLACK
     },

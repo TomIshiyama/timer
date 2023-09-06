@@ -93,6 +93,9 @@ const Trigger = styled(Tabs.Trigger)((props) => ({
   cursor: "pointer",
   "&:hover": {
     backgroundColor: COLOR.dark.tab.hover
+  },
+  "&:focus-visible": {
+    outline: "none"
   }
 }));
 
