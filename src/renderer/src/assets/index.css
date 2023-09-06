@@ -4,7 +4,8 @@ body {
   font-family: NotoSansJP, Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI",
     "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
   color: #86a5b1;
-  background-color: #303f3d;
+  background-color: transparent;
+  -webkit-app-region: drag;
 }
 
 * {
