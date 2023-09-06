@@ -44,6 +44,19 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     setState("preference", "sectionLimit", Number(e.target.value));
   };
 
+  // TODO:  this is base change hander.
+  // HACK:
+  const onChangeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
+    setValues(
+      (prev) =>
+        ({
+          ...prev,
+          [e.target.name]: Number(e.target.value)
+        } as Values)
+    );
+    db.preference.update("preference", { [e.target.name]: Number(e.target.value) });
+    setState("preference", { [e.target.name]: Number(e.target.value) });
+  };
   onMount(async () => {
     try {
       console.log("state", state);
@@ -68,11 +81,13 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     <Presentational
       defaultValues={{ ...getValues() }}
       getValues={getValues}
-      onChangeWork={onChangeValue}
-      onChangeShortBreak={onChangeValue}
-      onChangeLongBreak={onChangeValue}
-      onChangeLongBreakInterval={onChangeSectionValue}
+      onChangeWork={onChangeTimeValue}
+      onChangeShortBreak={onChangeTimeValue}
+      onChangeLongBreak={onChangeTimeValue}
+      onChangeLongBreakInterval={onChangeValue} //FIXME: should use onChangeValue?
       onChangeSectionLimit={onChangeSectionValue}
+      // Tired of increasing by the number of Inputs
+      onChangeOpacity={onChangeValue}
     />
   );
 };

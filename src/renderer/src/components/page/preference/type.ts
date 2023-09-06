@@ -7,6 +7,7 @@ export type PreferenceIDB = {
   longBreak: number;
   longBreakInterval: number;
   sectionLimit: number;
+  opacity: number;
 };
 
 export type Values = Omit<PreferenceIDB, "id">;
@@ -19,12 +20,16 @@ export type PreferenceProps = {
   onChangeLongBreak?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   onChangeLongBreakInterval?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   onChangeSectionLimit?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
+  onChangeOpacity?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
 };
 
 export type PreferenceState = {
+  // HACK: nested structure
+  // for pomodoro timer
   work: number;
   shortBreak: number;
   longBreak: number;
   longBreakInterval: number;
   sectionLimit: number;
+  opacity: number;
 };

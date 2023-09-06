@@ -16,6 +16,7 @@ type Props = {
   onChange?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   min?: number;
   max?: number;
+  step?: number;
 };
 
 const InputComponent: Component<Props> = (props) => {
@@ -31,6 +32,7 @@ const InputComponent: Component<Props> = (props) => {
         placeholder={props.placeholder}
         min={props.min}
         max={props.max}
+        step={props.step}
       />
     </TextField.Root>
   );

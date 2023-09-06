@@ -65,6 +65,18 @@ export const Presentational: Component<PreferenceProps> = (props) => {
           max={60}
           min={0}
         />
+
+        <Input
+          label="opacity"
+          placeholder="opacity"
+          onChange={props.onChangeOpacity}
+          name="opacity"
+          type="number"
+          defaultValue={props.defaultValues.opacity}
+          max={1.0}
+          min={0}
+          step={0.01}
+        />
       </Container>
     </Wrapper>
   );
