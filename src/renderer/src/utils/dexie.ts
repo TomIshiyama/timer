@@ -14,6 +14,13 @@ export class MySubClassedDexie extends Dexie {
     this.version(4).stores({
       preference: "id, work, shortBreak, longBreak, longBreakInterval, sectionLimit"
     });
+    this.version(5).stores({
+      preference: "id, work, shortBreak, longBreak, longBreakInterval, sectionLimit, sounds"
+    });
+    this.version(6).stores({
+      preference:
+        "id, work, shortBreak, longBreak, longBreakInterval, sectionLimit, opacity, sounds"
+    });
   }
 }
 

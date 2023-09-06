@@ -5,16 +5,17 @@ import { omit } from "../../../utils/util";
 import { StateContext } from "../../utility/StateProvider/StateProvider";
 import { Presentational } from "./Presentational";
 import { DEFAULT_VALUES } from "./const";
-import { PreferenceProps, Values } from "./type";
+import { PreferenceProps, PreferenceState, Values } from "./type";
 
-const INIT_VALUES = unixToMinutes(DEFAULT_VALUES, ["sectionLimit", "longBreakInterval"]);
+const pickValue: (keyof PreferenceState)[] = ["work", "shortBreak", "longBreak"];
 
+const INIT_VALUES = unixToMinutes(DEFAULT_VALUES, pickValue);
 export const PreferenceContainer: Component<PreferenceProps> = (props) => {
   const [getValues, setValues] = createSignal<Values>(INIT_VALUES);
   const { state, setState } = useContext(StateContext);
 
   // HACK: type definition.
-  const onChangeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
+  const onChangeTimeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
     console.log(getValues());
     setValues(
       (prev) =>
@@ -25,11 +26,8 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     );
     console.log(getValues());
     //
-    db.preference.update(
-      "preference",
-      minutesToUnix(getValues(), ["sectionLimit", "longBreakInterval"])
-    );
-    setState("preference", minutesToUnix(getValues(), ["sectionLimit", "longBreakInterval"]));
+    db.preference.update("preference", minutesToUnix(getValues(), pickValue));
+    setState("preference", minutesToUnix(getValues(), pickValue));
   };
 
   const onChangeSectionValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
@@ -44,6 +42,19 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     setState("preference", "sectionLimit", Number(e.target.value));
   };
 
+  // TODO:  this is base change hander.
+  // HACK:
+  const onChangeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
+    setValues(
+      (prev) =>
+        ({
+          ...prev,
+          [e.target.name]: Number(e.target.value)
+        } as Values)
+    );
+    db.preference.update("preference", { [e.target.name]: Number(e.target.value) });
+    setState("preference", { [e.target.name]: Number(e.target.value) });
+  };
   onMount(async () => {
     try {
       console.log("state", state);
@@ -55,9 +66,7 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
         });
       }
       setValues(
-        initialValues == null
-          ? DEFAULT_VALUES
-          : unixToMinutes(omit(initialValues, "id"), ["sectionLimit", "longBreakInterval"])
+        initialValues == null ? DEFAULT_VALUES : unixToMinutes(omit(initialValues, "id"), pickValue)
       );
     } catch (e) {
       console.error(e);
@@ -68,11 +77,13 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     <Presentational
       defaultValues={{ ...getValues() }}
       getValues={getValues}
-      onChangeWork={onChangeValue}
-      onChangeShortBreak={onChangeValue}
-      onChangeLongBreak={onChangeValue}
-      onChangeLongBreakInterval={onChangeSectionValue}
+      onChangeWork={onChangeTimeValue}
+      onChangeShortBreak={onChangeTimeValue}
+      onChangeLongBreak={onChangeTimeValue}
+      onChangeLongBreakInterval={onChangeValue} //FIXME: should use onChangeValue?
       onChangeSectionLimit={onChangeSectionValue}
+      // Tired of increasing by the number of Inputs
+      onChangeOpacity={onChangeValue}
     />
   );
 };

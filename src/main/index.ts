@@ -1,14 +1,4 @@
-import {
-  app,
-  shell,
-  BrowserWindow,
-  nativeImage,
-  Tray,
-  Menu,
-  ipcMain,
-  BrowserWindowConstructorOptions,
-  screen
-} from "electron";
+import { app, shell, BrowserWindow, nativeImage, Tray, Menu, ipcMain, screen } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
@@ -66,8 +56,7 @@ function createWindow(
   // let storeState = store.get("windowSize", defaultWindowSize);
   const storeState = store.get(key, defaultStore) as unknown as Window;
 
-  // const storeState = restore();
-
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const getCurrentPosition = () => {
     const position = window.getPosition();
     const size = window.getSize();
@@ -78,6 +67,7 @@ function createWindow(
       height: size[1]
     };
   };
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const resetWindow = () => {
     const bounds = screen.getPrimaryDisplay().bounds;
     return Object.assign({}, DEFAULT_SIZE, {
@@ -86,7 +76,7 @@ function createWindow(
     });
   };
 
-  const savePosition = () => {
+  const savePosition = (): void => {
     if (!window.isMinimized() && !window.isMaximized()) {
       Object.assign(storeState, getCurrentPosition());
     } else {
@@ -100,6 +90,8 @@ function createWindow(
     ...storeState,
     // width: 900,
     // height: 670,
+    transparent: true,
+    frame: false,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === "linux" ? { icon } : {}),

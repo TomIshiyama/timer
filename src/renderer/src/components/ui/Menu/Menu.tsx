@@ -1,5 +1,5 @@
 import { useNavigate } from "@solidjs/router";
-import { Component, createSignal, onMount } from "solid-js";
+import { Component, createSignal, onMount, JSX } from "solid-js";
 import { styled } from "solid-styled-components";
 import { IconGearSVG } from "../../../assets/IconGearSVG";
 import { IconTomatoSVG } from "../../../assets/IconTomatoSVG";
@@ -7,7 +7,10 @@ import { COLOR } from "../../../utils/color";
 import { Tab } from "../Tab/Tab";
 import { routes } from "@renderer/components/utility/Routes/routes";
 
-type Props = { wip?: unknown };
+type Props = {
+  onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> | undefined;
+  isOpen?: boolean;
+};
 
 const tabListWithIcon = [
   // { value: "/", label: "Home" },
@@ -41,34 +44,27 @@ const tabListOnlyIcon = [
   }
 ];
 
-export const Menu: Component<Props> = (_) => {
+export const Menu: Component<Props> = (props) => {
   const navigate = useNavigate();
-  const [getOpen, setOpen] = createSignal(false);
-  onMount(() => {
-    navigate("/pomodoro");
-  });
+
   return (
     <div
       style={{
-        position: "relative",
+        position: "fixed",
         background: `${COLOR.dark.base.background}`,
-        "border-right": `1px solid ${COLOR.dark.footer.border}`
+        "border-right": `1px solid ${COLOR.dark.footer.border}`,
+        width: props.isOpen ? "88px" : "48px",
+        transition: "all 0.2s ease-in-out 0s"
       }}
     >
       <Tab
         disableBorder
-        tabList={getOpen() ? tabListWithIcon : tabListOnlyIcon}
+        tabList={props.isOpen ? tabListWithIcon : tabListOnlyIcon}
         orientation={"vertical"}
         onChange={(path): void => navigate(path)}
         defaultValue="/pomodoro"
       />
-      <Button
-        onClick={(): void => {
-          setOpen((prev) => !prev);
-        }}
-      >
-        {getOpen() ? "<" : ">"}
-      </Button>
+      <Button onClick={props.onClick}>{props.isOpen ? "<" : ">"}</Button>
     </div>
   );
 };
