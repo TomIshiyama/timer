@@ -1,3 +1,4 @@
+import { AlmostDone, Break, TurnOver, Work } from "@renderer/assets/sounds/sounds";
 import { Accessor, JSX } from "solid-js";
 
 export type PreferenceIDB = {
@@ -8,6 +9,14 @@ export type PreferenceIDB = {
   longBreakInterval: number;
   sectionLimit: number;
   opacity: number;
+  sounds?: {
+    volume?: number; // 0.0 to 1.0
+    work?: Work;
+    shortBreak?: Break;
+    longBreak?: Break;
+    turnOver?: TurnOver;
+    almostDone?: AlmostDone;
+  };
 };
 
 export type Values = Omit<PreferenceIDB, "id">;
@@ -21,6 +30,7 @@ export type PreferenceProps = {
   onChangeLongBreakInterval?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   onChangeSectionLimit?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
   onChangeOpacity?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
+  onChangeSoundsParams?: JSX.ChangeEventHandler<HTMLInputElement, Event> | undefined;
 };
 
 export type PreferenceState = {
@@ -32,4 +42,13 @@ export type PreferenceState = {
   longBreakInterval: number;
   sectionLimit: number;
   opacity: number;
+  // for sounds
+  sounds?: {
+    volume?: number; // 0.0 to 1.0
+    work?: Work;
+    shortBreak?: Break;
+    longBreak?: Break;
+    turnOver?: TurnOver;
+    almostDone?: AlmostDone;
+  };
 };
