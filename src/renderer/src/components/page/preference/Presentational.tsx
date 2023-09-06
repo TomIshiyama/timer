@@ -77,6 +77,18 @@ export const Presentational: Component<PreferenceProps> = (props) => {
           min={0}
           step={0.01}
         />
+
+        <Input
+          label="volume"
+          placeholder="volume"
+          onChange={props.onChangeSoundsParams}
+          name="volume"
+          type="number"
+          defaultValue={props.defaultValues.sounds?.volume}
+          max={1.0}
+          min={0}
+          step={0.1}
+        />
       </Container>
     </Wrapper>
   );
