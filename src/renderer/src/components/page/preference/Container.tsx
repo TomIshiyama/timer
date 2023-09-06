@@ -10,6 +10,7 @@ import { PreferenceProps, PreferenceState, Values } from "./type";
 const pickValue: (keyof PreferenceState)[] = ["work", "shortBreak", "longBreak"];
 
 const INIT_VALUES = unixToMinutes(DEFAULT_VALUES, pickValue);
+
 export const PreferenceContainer: Component<PreferenceProps> = (props) => {
   const [getValues, setValues] = createSignal<Values>(INIT_VALUES);
   const { state, setState } = useContext(StateContext);
@@ -42,6 +43,31 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     setState("preference", "sectionLimit", Number(e.target.value));
   };
 
+  const onChangeSoundsValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
+    let parsed: string | number = Number.parseFloat(e.target.value);
+    console.log("sound", getValues(), e.target.name, e.target.value, parsed);
+    if (Number.isNaN(parsed)) {
+      parsed = e.target.value;
+    }
+
+    setValues(
+      (prev) =>
+        ({
+          ...prev,
+          sounds: {
+            ...prev.sounds,
+            [e.target.name]: parsed
+          }
+        } as Values)
+    );
+    console.log("sound", getValues());
+
+    db.preference.update("preference", {
+      sounds: getValues().sounds
+    });
+    setState("preference", "sounds", getValues().sounds);
+  };
+
   // TODO:  this is base change hander.
   // HACK:
   const onChangeValue: JSX.ChangeEventHandler<HTMLInputElement, Event> = async (e) => {
@@ -55,6 +81,7 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
     db.preference.update("preference", { [e.target.name]: Number(e.target.value) });
     setState("preference", { [e.target.name]: Number(e.target.value) });
   };
+
   onMount(async () => {
     try {
       console.log("state", state);
@@ -84,6 +111,7 @@ export const PreferenceContainer: Component<PreferenceProps> = (props) => {
       onChangeSectionLimit={onChangeSectionValue}
       // Tired of increasing by the number of Inputs
       onChangeOpacity={onChangeValue}
+      onChangeSoundsParams={onChangeSoundsValue}
     />
   );
 };
