@@ -100,8 +100,11 @@ export const playAudioLoop = async (audio: HTMLAudioElement): Promise<HTMLAudioE
 };
 
 // HACK: use the partial adaptation of function
-export const playTurnOver = async (audio: TurnOver): Promise<void> =>
-  cloneAudio(TURNOVER_AUDIO[audio]).play();
+export const playTurnOver = async (audio: TurnOver, volume = 0.5): Promise<void> => {
+  const clone = cloneAudio(TURNOVER_AUDIO[audio]);
+  clone.volume = volume;
+  clone.play();
+};
 
 export const playWork = async (audio: Work): Promise<void> => cloneAudio(WORK_AUDIO[audio]).play();
 export const playBreak = async (audio: Break): Promise<void> =>
