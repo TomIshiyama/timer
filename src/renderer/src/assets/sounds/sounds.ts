@@ -24,13 +24,21 @@ import finishShoutsApplause from "./finish_shouts_applause.mp3";
 const breakPondAudio = new Audio(breakPond);
 const breakRiverAudio = new Audio(breakRiver);
 const turnoverAlarmAudio = new Audio(turnoverAlarm);
+turnoverAlarmAudio.volume = 0.5;
 const turnoverBatAudio = new Audio(turnoverBat);
+turnoverBatAudio.volume = 0.5;
 const turnoverBellAudio = new Audio(turnoverBell);
+turnoverBellAudio.volume = 0.5;
 const turnoverChichenAudio = new Audio(turnoverChichen);
+turnoverChichenAudio.volume = 0.5;
 const turnoverMicrowaveAudio = new Audio(turnoverMicrowave);
+turnoverMicrowaveAudio.volume = 0.5;
 const turnoverPigeonAudio = new Audio(turnoverPigeon);
+turnoverPigeonAudio.volume = 0.5;
 const turnoverPigeon2Audio = new Audio(turnoverPigeon2);
+turnoverPigeon2Audio.volume = 0.5;
 const turnoverSwordAudio = new Audio(turnoverSword);
+turnoverSwordAudio.volume = 0.5;
 const workClockLightAudio = new Audio(workClockLight);
 const workClockTowerAudio = new Audio(workClockTower);
 const workClock1Audio = new Audio(workClock1);
@@ -93,8 +101,12 @@ export const pauseAudioLoop = async (audio: HTMLAudioElement | undefined): Promi
   if (audio == null) return;
   audio.pause();
 };
-export const playAudioLoop = async (audio: HTMLAudioElement): Promise<HTMLAudioElement> => {
+export const playAudioLoop = async (
+  audio: HTMLAudioElement
+  // volume = 0.5
+): Promise<HTMLAudioElement> => {
   audio.loop = true;
+  // audio.volume = volume;
   audio.play();
   return audio;
 };
