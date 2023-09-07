@@ -62,6 +62,26 @@ export function useTimeMovement(): UseTimeMovementReturns {
     };
   });
 
+  // TODO: make preference of a turnOver sound .
+  // if wrap it with createMemo, the following function will be executed.
+  const playTurnOverAudio = (): void => {
+    console.log("playturnover ");
+    if (isNextLongBreak()) {
+      playTurnOver(state.pomodoro.sounds.turnOver);
+      return;
+    }
+    if (isNextShortBreak()) {
+      playTurnOver(state.pomodoro.sounds.turnOver);
+      return;
+    }
+
+    if (isNextFinish() && state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.done) {
+      playDone("shouts");
+      return;
+    }
+    playTurnOver(state.pomodoro.sounds.turnOver);
+    return;
+  };
   return {
     isNextShortBreak,
     isNextLongBreak,
