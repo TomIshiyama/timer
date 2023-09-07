@@ -1,20 +1,9 @@
-import { Component, JSX, createEffect, createMemo, onCleanup, onMount, useContext } from "solid-js";
-import {
-  PomodoroRunningStatus,
-  TIMER_RUNNING_STATUS,
-  TIMER_STATE_TRANSITION
-} from "../../page/pomodoro/type";
+import { pauseAudioLoop, playAudioLoop } from "@renderer/assets/sounds/sounds";
+import { getTimeLiteral, getTimeWithoutHours } from "@renderer/utils/time";
+import { Component, JSX, createEffect, onCleanup, useContext } from "solid-js";
+import { TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "../../page/pomodoro/type";
 import { StateContext } from "../StateProvider/StateProvider";
 import { useTimeMovement } from "./useTimeMovement";
-import {
-  playAudioLoop,
-  WORK_AUDIO,
-  pauseAudioLoop,
-  BREAK_AUDIO,
-  Break,
-  Work
-} from "@renderer/assets/sounds/sounds";
-import { getTimeWithoutHours, getTimeLiteral } from "@renderer/utils/time";
 
 const INTERVAL_DELAY = 1000;
 
@@ -41,10 +30,6 @@ export const TimeMovement: Component<Props> = (props) => {
     id = window.setInterval(() => {
       if (state.pomodoro.stateTransition !== TIMER_STATE_TRANSITION.running) {
         clearInterval(state.pomodoro.intervalId);
-        // setState("pomodoro", "intervalId", undefined);
-        // clearInterval(id);
-        // pauseAudioLoop(state.pomodoro.currentAudio);
-        // setState("pomodoro", "currentAudio", undefined);
         clear(id);
 
         return;
@@ -89,26 +74,10 @@ export const TimeMovement: Component<Props> = (props) => {
     window.electronAPI.setTrayTitle(title);
   };
 
-  const getAudio = (
-    status: PomodoroRunningStatus,
-    sounds: { workSound: Work; shortBreak: Break; longBreak: Break }
-  ): HTMLAudioElement => {
-    switch (status) {
-      case TIMER_RUNNING_STATUS.work:
-        return WORK_AUDIO[sounds.workSound];
-      case TIMER_RUNNING_STATUS.shortBreak:
-        return BREAK_AUDIO[sounds.shortBreak];
-      case TIMER_RUNNING_STATUS.longBreak:
-        return BREAK_AUDIO[sounds.longBreak];
-    }
-  };
   /**
    *  Audio settings
    */
 
-  const isRunning = createMemo(
-    () => state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.running
-  );
   createEffect(() => {
     console.log("onchange playAudio");
     if (!state.pomodoro.currentAudio) return;
@@ -118,6 +87,7 @@ export const TimeMovement: Component<Props> = (props) => {
   // NOTE: On the only pomodoro page,
   // user can hear the sound while counting down .
   createEffect(() => {
+    console.log("onchange volume sound ", state.pomodoro.sounds, state.preference.sounds);
     if (!state.pomodoro.currentAudio) return;
     state.pomodoro.currentAudio.volume = state.preference.sounds.volume;
   });
