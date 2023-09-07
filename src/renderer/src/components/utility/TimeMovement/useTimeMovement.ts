@@ -1,17 +1,27 @@
 import {
   PomodoroRunningStatus,
   PomodoroState,
-  TIMER_RUNNING_STATUS
+  TIMER_RUNNING_STATUS,
+  TIMER_STATE_TRANSITION
 } from "@renderer/components/page/pomodoro/type";
 import { useContext, createMemo, Accessor } from "solid-js";
 import { StateContext } from "../StateProvider/StateProvider";
+import {
+  BREAK_AUDIO,
+  WORK_AUDIO,
+  pauseAudioLoop,
+  playDone,
+  playTurnOver
+} from "../../../assets/sounds/sounds";
 
 type UseTimeMovementReturns = {
   isNextShortBreak: Accessor<boolean>;
   isNextLongBreak: Accessor<boolean>;
   isNextFinish: Accessor<boolean>;
+  isRunning: Accessor<boolean>;
   getNextStatus: Accessor<PomodoroRunningStatus>;
   getNextPomodoroParameters: Accessor<Pick<PomodoroState, "status" | "setTime" | "remainingTime">>;
+  playTurnOverAudio: () => void;
   //   state: State["pomodoro"];
   //   setState: SetStoreFunction<State["pomodoro"]>;
 };
@@ -34,6 +44,10 @@ export function useTimeMovement(): UseTimeMovementReturns {
     () => state.pomodoro.section.current === state.pomodoro.section.limit
   );
 
+  const isRunning = createMemo(
+    () => state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.running
+  );
+
   const getNextStatus = createMemo(() => {
     if (isNextLongBreak()) return TIMER_RUNNING_STATUS.longBreak;
     if (isNextShortBreak()) return TIMER_RUNNING_STATUS.shortBreak;
@@ -45,20 +59,23 @@ export function useTimeMovement(): UseTimeMovementReturns {
       return {
         status: TIMER_RUNNING_STATUS.longBreak,
         setTime: state.pomodoro.longBreak,
-        remainingTime: state.pomodoro.longBreak
+        remainingTime: state.pomodoro.longBreak,
+        currentAudio: BREAK_AUDIO[state.pomodoro.sounds.longBreak]
       };
 
     if (isNextShortBreak())
       return {
         status: TIMER_RUNNING_STATUS.shortBreak,
         setTime: state.pomodoro.shortBreak,
-        remainingTime: state.pomodoro.shortBreak
+        remainingTime: state.pomodoro.shortBreak,
+        currentAudio: BREAK_AUDIO[state.pomodoro.sounds.shortBreak]
       };
 
     return {
       status: TIMER_RUNNING_STATUS.work,
       setTime: state.pomodoro.work,
-      remainingTime: state.pomodoro.work
+      remainingTime: state.pomodoro.work,
+      currentAudio: WORK_AUDIO[state.pomodoro.sounds.work]
     };
   });
 
@@ -82,11 +99,15 @@ export function useTimeMovement(): UseTimeMovementReturns {
     playTurnOver(state.pomodoro.sounds.turnOver);
     return;
   };
+
+
   return {
     isNextShortBreak,
     isNextLongBreak,
     isNextFinish,
+    isRunning,
     getNextStatus,
-    getNextPomodoroParameters
+    getNextPomodoroParameters,
+    playTurnOverAudio
   };
 }
