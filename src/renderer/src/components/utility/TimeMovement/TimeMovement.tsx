@@ -89,7 +89,13 @@ export const TimeMovement: Component<Props> = (props) => {
   createEffect(() => {
     console.log("onchange volume sound ", state.pomodoro.sounds, state.preference.sounds);
     if (!state.pomodoro.currentAudio) return;
-    state.pomodoro.currentAudio.volume = state.preference.sounds.volume;
+
+    const volume =
+      state.pomodoro.status !== TIMER_RUNNING_STATUS.work
+        ? state.preference.sounds.volume * 0.5
+        : state.preference.sounds.volume;
+
+    state.pomodoro.currentAudio.volume = volume;
   });
 
   return props.children;
