@@ -1,4 +1,6 @@
+import { Work, Break, TurnOver, AlmostDone } from "@renderer/assets/sounds/sounds";
 import { JSX } from "solid-js";
+import { Sound } from "../preference/type";
 
 export const TIMER_RUNNING_STATUS = {
   work: "work",
@@ -54,4 +56,7 @@ export type PomodoroState = {
   section: Section;
   intervalId: number | undefined;
   futureTime: number;
+  currentAudio?: HTMLAudioElement;
+  // HACK: type definition of Sound
+  sounds: Omit<Sound, "volume">;
 };

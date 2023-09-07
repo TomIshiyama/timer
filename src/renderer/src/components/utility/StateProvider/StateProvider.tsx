@@ -15,6 +15,7 @@ type ContextType<T = object> = {
   setState: SetStoreFunction<T>;
 };
 
+const { volume: _, ...sounds } = DEFAULT_VALUES.sounds;
 // FIXME: should be able to manually set the following values.
 export const mockPomodoroTimer = {
   work: 25 * 60 * 1000,
@@ -29,6 +30,7 @@ export const mockPomodoroTimer = {
     current: 1,
     limit: 10
   },
+  sounds: { ...sounds },
   intervalId: undefined // HACK: I wanna use null property
 };
 
@@ -66,6 +68,10 @@ export async function fetchState(): Promise<State> {
       section: {
         current: 1,
         limit: sectionLimit
+      },
+      currentAudio: undefined,
+      sounds: {
+        ...preference.sounds
       }
     },
     timer: {

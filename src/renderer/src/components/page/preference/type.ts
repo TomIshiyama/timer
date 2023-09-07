@@ -9,14 +9,7 @@ export type PreferenceIDB = {
   longBreakInterval: number;
   sectionLimit: number;
   opacity: number;
-  sounds?: {
-    volume?: number; // 0.0 to 1.0
-    work?: Work;
-    shortBreak?: Break;
-    longBreak?: Break;
-    turnOver?: TurnOver;
-    almostDone?: AlmostDone;
-  };
+  sounds: Sound;
 };
 
 export type Values = Omit<PreferenceIDB, "id">;
@@ -43,12 +36,14 @@ export type PreferenceState = {
   sectionLimit: number;
   opacity: number;
   // for sounds
-  sounds?: {
-    volume?: number; // 0.0 to 1.0
-    work?: Work;
-    shortBreak?: Break;
-    longBreak?: Break;
-    turnOver?: TurnOver;
-    almostDone?: AlmostDone;
-  };
+  sounds: Sound;
+};
+
+export type Sound = {
+  volume: number; // 0.0 to 1.0
+  work: Work;
+  shortBreak: Break;
+  longBreak: Break;
+  turnOver: TurnOver;
+  almostDone: AlmostDone;
 };
