@@ -1,11 +1,16 @@
 import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
 import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
 import { Component, onCleanup, onMount, useContext } from "solid-js";
-import { WORK_AUDIO } from "../../../assets/sounds/sounds";
+import { BREAK_AUDIO, Break, WORK_AUDIO, Work } from "../../../assets/sounds/sounds";
 import { getTimeLiteral } from "../../../utils/time";
 import { useWindowRect } from "../../../utils/useWindowRect";
 import { PomodoroPresentational } from "./Presentational";
-import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
+import {
+  PomodoroProps,
+  PomodoroRunningStatus,
+  TIMER_RUNNING_STATUS,
+  TIMER_STATE_TRANSITION
+} from "./type";
 
 export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { state, setState } = useContext(StateContext);
@@ -15,11 +20,24 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   // HACK: create a new file for usePomodoroTimer hooks
   const { getNextPomodoroParameters, isNextFinish, clear, playTurnOverAudio } = useTimeMovement();
 
+  const getAudio = (): HTMLAudioElement => {
+    switch (state.pomodoro.status) {
+      case TIMER_RUNNING_STATUS.work:
+        return WORK_AUDIO[state.pomodoro.sounds.work];
+      case TIMER_RUNNING_STATUS.shortBreak:
+        return BREAK_AUDIO[state.pomodoro.sounds.shortBreak];
+      case TIMER_RUNNING_STATUS.longBreak:
+        return BREAK_AUDIO[state.pomodoro.sounds.longBreak];
+    }
+  };
+
   // handlers
   const onClickPlay = (): void => {
     // setState("pomodoro", "isRunning", true);
+    const audio = getAudio();
+    // if (state.pomodoro.status !== TIMER_RUNNING_STATUS.work) audio.volume *= 0.5;
     setState("pomodoro", "stateTransition", TIMER_STATE_TRANSITION.running);
-    setState("pomodoro", "currentAudio", WORK_AUDIO[state.pomodoro.sounds.work]);
+    setState("pomodoro", "currentAudio", audio);
     const title = getTimeLiteral(state.pomodoro.remainingTime);
     window.electronAPI.setTrayTitle(title);
   };
@@ -123,4 +141,18 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       />
     </>
   );
+};
+
+const getAudio = (
+  status: PomodoroRunningStatus,
+  sounds: { workSound: Work; shortBreak: Break; longBreak: Break }
+): HTMLAudioElement => {
+  switch (status) {
+    case TIMER_RUNNING_STATUS.work:
+      return WORK_AUDIO[sounds.workSound];
+    case TIMER_RUNNING_STATUS.shortBreak:
+      return BREAK_AUDIO[sounds.shortBreak];
+    case TIMER_RUNNING_STATUS.longBreak:
+      return BREAK_AUDIO[sounds.longBreak];
+  }
 };
