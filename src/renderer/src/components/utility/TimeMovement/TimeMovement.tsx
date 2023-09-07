@@ -54,6 +54,8 @@ export const TimeMovement: Component<Props> = (props) => {
       setState("pomodoro", { remainingTime });
       sendTimetoTray(state.pomodoro.remainingTime);
       if (state.pomodoro.futureTime < currentTime) {
+        pauseAudioLoop(state.pomodoro.currentAudio);
+        playTurnOverAudio();
         const params = getNextPomodoroParameters();
         setState("pomodoro", {
           ...params,
@@ -67,10 +69,8 @@ export const TimeMovement: Component<Props> = (props) => {
             }
           })
         });
-        playTurnOverAudio();
         console.log("intervalId", id, state.pomodoro.intervalId);
         clearInterval(id);
-        clear(state.pomodoro.intervalId);
         return;
       }
     }, INTERVAL_DELAY);
@@ -102,29 +102,23 @@ export const TimeMovement: Component<Props> = (props) => {
         return BREAK_AUDIO[sounds.longBreak];
     }
   };
+  /**
+   *  Audio settings
+   */
 
   const isRunning = createMemo(
     () => state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.running
   );
+  createEffect(() => {
+    console.log("onchange playAudio");
+    if (!state.pomodoro.currentAudio) return;
+    playAudioLoop(state.pomodoro.currentAudio);
+  });
+
   // NOTE: On the only pomodoro page,
   // user can hear the sound while counting down .
   createEffect(() => {
-    console.log("onmount sound ", state.pomodoro.sounds, state.preference.sounds);
-    // if (!state.pomodoro.sounds.currentAudio) return;
-    if (!isRunning()) {
-      // if (state.pomodoro.currentAudio) pauseAudioLoop(state.pomodoro.currentAudio);
-      console.log("not played");
-      return;
-    }
-
     if (!state.pomodoro.currentAudio) return;
-
-    console.log("audio played");
-
-    (async (): Promise<void> => {
-      const currentAudio = await playAudioLoop(state.pomodoro.currentAudio!);
-      setState("pomodoro", "currentAudio", currentAudio);
-    })();
     state.pomodoro.currentAudio.volume = state.preference.sounds.volume;
   });
 
