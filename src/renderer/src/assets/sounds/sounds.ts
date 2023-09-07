@@ -15,6 +15,9 @@ import workOven from "./work_oven.mp3";
 import workSwordsmith from "./work_swordsmith.mp3";
 import workTimerHarry from "./work_timer_harry.mp3";
 import workTimerNormal from "./work_timer_normal.mp3";
+import finishApplause from "./finish_applause.mp3";
+import finishFireworks from "./finish_fireworks.mp3";
+import finishShoutsApplause from "./finish_shouts_applause.mp3";
 
 // create audio on root for preload
 // HACK: too much scripts.
@@ -35,6 +38,9 @@ const workOvenAudio = new Audio(workOven);
 const workSwordsmithAudio = new Audio(workSwordsmith);
 const workTimerHarryAudio = new Audio(workTimerHarry);
 const workTimerNormalAudio = new Audio(workTimerNormal);
+const finishApplauseAudio = new Audio(finishApplause);
+const finishFireworksAudio = new Audio(finishFireworks);
+const finishShoutsApplauseAudio = new Audio(finishShoutsApplause);
 
 export const BREAK_AUDIO = {
   pond: breakPondAudio,
@@ -68,6 +74,12 @@ export const ALMOST_DONE_AUDIO = {
   timerHarry: workTimerHarryAudio
 } as const;
 
+export const DONE_AUDIO = {
+  applause: finishApplauseAudio,
+  fireworks: finishFireworksAudio,
+  shouts: finishShoutsApplauseAudio
+};
+
 const cloneAudio = (audio: HTMLAudioElement): HTMLAudioElement =>
   audio.cloneNode() as HTMLAudioElement;
 
@@ -75,8 +87,10 @@ export type TurnOver = keyof typeof TURNOVER_AUDIO;
 export type Work = keyof typeof WORK_AUDIO;
 export type AlmostDone = keyof typeof ALMOST_DONE_AUDIO;
 export type Break = keyof typeof BREAK_AUDIO;
+export type Done = keyof typeof DONE_AUDIO;
 
-export const pauseAudioLoop = async (audio: HTMLAudioElement): Promise<void> => {
+export const pauseAudioLoop = async (audio: HTMLAudioElement | undefined): Promise<void> => {
+  if (audio == null) return;
   audio.pause();
 };
 export const playAudioLoop = async (audio: HTMLAudioElement): Promise<HTMLAudioElement> => {
@@ -92,6 +106,8 @@ export const playTurnOver = async (audio: TurnOver): Promise<void> =>
 export const playWork = async (audio: Work): Promise<void> => cloneAudio(WORK_AUDIO[audio]).play();
 export const playBreak = async (audio: Break): Promise<void> =>
   cloneAudio(BREAK_AUDIO[audio]).play();
+
+export const playDone = async (audio: Done): Promise<void> => cloneAudio(DONE_AUDIO[audio]).play();
 
 export const playAlmostDone = async (_audio: AlmostDone): Promise<void> => {
   const audio = cloneAudio(ALMOST_DONE_AUDIO[_audio]);
