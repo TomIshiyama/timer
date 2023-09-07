@@ -4,10 +4,16 @@ import solid from "vite-plugin-solid";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
+    build: {
+      outDir: "dist/main"
+    }
   },
   preload: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
+    build: {
+      outDir: "dist/preload"
+    }
   },
   renderer: {
     resolve: {
@@ -15,6 +21,12 @@ export default defineConfig({
         "@renderer": resolve("src/renderer/src")
       }
     },
-    plugins: [solid()]
+    build: {
+      outDir: "dist/renderer"
+    },
+    plugins: [solid()],
+    esbuild: {
+      drop: ["console", "debugger"]
+    }
   }
 });
