@@ -21,6 +21,7 @@ type UseTimeMovementReturns = {
   isRunning: Accessor<boolean>;
   getNextStatus: Accessor<PomodoroRunningStatus>;
   getNextPomodoroParameters: Accessor<Pick<PomodoroState, "status" | "setTime" | "remainingTime">>;
+  clear: (intervalId: number | undefined) => void;
   playTurnOverAudio: () => void;
   //   state: State["pomodoro"];
   //   setState: SetStoreFunction<State["pomodoro"]>;
@@ -100,6 +101,11 @@ export function useTimeMovement(): UseTimeMovementReturns {
     return;
   };
 
+  const clear = (intervalId: number | undefined): void => {
+    clearInterval(intervalId);
+    pauseAudioLoop(state.pomodoro.currentAudio);
+    setState("pomodoro", { intervalId: undefined, currentAudio: undefined });
+  };
 
   return {
     isNextShortBreak,
@@ -108,6 +114,7 @@ export function useTimeMovement(): UseTimeMovementReturns {
     isRunning,
     getNextStatus,
     getNextPomodoroParameters,
+    clear,
     playTurnOverAudio
   };
 }
