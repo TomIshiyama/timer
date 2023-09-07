@@ -1,10 +1,16 @@
 import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
-import { Component, onMount, useContext } from "solid-js";
+import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
+import { Component, onCleanup, onMount, useContext } from "solid-js";
+import { BREAK_AUDIO, Break, WORK_AUDIO, Work } from "../../../assets/sounds/sounds";
 import { getTimeLiteral } from "../../../utils/time";
 import { useWindowRect } from "../../../utils/useWindowRect";
 import { PomodoroPresentational } from "./Presentational";
-import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
-import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
+import {
+  PomodoroProps,
+  PomodoroRunningStatus,
+  TIMER_RUNNING_STATUS,
+  TIMER_STATE_TRANSITION
+} from "./type";
 
 export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { state, setState } = useContext(StateContext);
@@ -12,31 +18,42 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { getRect } = useWindowRect();
 
   // HACK: create a new file for usePomodoroTimer hooks
-  const { getNextPomodoroParameters, isNextFinish } = useTimeMovement();
+  const { getNextPomodoroParameters, isNextFinish, clear, playTurnOverAudio } = useTimeMovement();
+
+  const getAudio = (): HTMLAudioElement => {
+    switch (state.pomodoro.status) {
+      case TIMER_RUNNING_STATUS.work:
+        return WORK_AUDIO[state.pomodoro.sounds.work];
+      case TIMER_RUNNING_STATUS.shortBreak:
+        return BREAK_AUDIO[state.pomodoro.sounds.shortBreak];
+      case TIMER_RUNNING_STATUS.longBreak:
+        return BREAK_AUDIO[state.pomodoro.sounds.longBreak];
+    }
+  };
 
   // handlers
   const onClickPlay = (): void => {
     // setState("pomodoro", "isRunning", true);
+    const audio = getAudio();
+    // if (state.pomodoro.status !== TIMER_RUNNING_STATUS.work) audio.volume *= 0.5;
     setState("pomodoro", "stateTransition", TIMER_STATE_TRANSITION.running);
+    setState("pomodoro", "currentAudio", audio);
     const title = getTimeLiteral(state.pomodoro.remainingTime);
     window.electronAPI.setTrayTitle(title);
   };
 
   const onClickPause = (): void => {
     console.log("onClickPause");
-    clearInterval(state.pomodoro.intervalId);
     setState("pomodoro", {
       stateTransition: TIMER_STATE_TRANSITION.pause,
-      // [state.pomodoro.status]: state.pomodoro.remainingTime,
-      setTime: state.pomodoro.remainingTime,
-      intervalId: undefined
+      setTime: state.pomodoro.remainingTime
     });
+    clear(state.pomodoro.intervalId);
     window.electronAPI.setTrayTitle("pause");
   };
 
   const goNextSection = (): void => {
-    clearInterval(state.pomodoro.intervalId);
-    setState("pomodoro", "intervalId", undefined);
+    clear(state.pomodoro.intervalId);
     setState("pomodoro", (prev) => ({
       ...getNextPomodoroParameters(),
       ...(isNextFinish() && { stateTransition: TIMER_STATE_TRANSITION.done }),
@@ -48,13 +65,13 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
         }
       })
     }));
+    playTurnOverAudio();
   };
 
   // HACK: create a constant for finished status
   // When click the finish button
   const forceFinish = (): void => {
     // HACK: initial state
-    clearInterval(state.pomodoro.intervalId);
     setState("pomodoro", {
       status: TIMER_RUNNING_STATUS.work,
       stateTransition: TIMER_STATE_TRANSITION.initial,
@@ -65,9 +82,9 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       shortBreak: state.preference.shortBreak,
       longBreak: state.preference.longBreak,
       longBreakInterval: state.preference.longBreakInterval,
-      section: { current: 1, limit: state.preference.sectionLimit },
-      intervalId: undefined
+      section: { current: 1, limit: state.preference.sectionLimit }
     });
+    clear(state.pomodoro.intervalId);
   };
 
   const onClickInitialize = (): void => {
@@ -86,8 +103,22 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       shortBreak: state.preference.shortBreak,
       longBreak: state.preference.longBreak,
       longBreakInterval: state.preference.longBreakInterval,
-      section: { ...state.pomodoro.section, limit: state.preference.sectionLimit }
+      section: { ...state.pomodoro.section, limit: state.preference.sectionLimit },
+      sounds: { ...state.preference.sounds }
     });
+  });
+
+  onMount(() => {
+    if (state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.done) {
+      forceFinish();
+    }
+  });
+
+  onCleanup(() => {
+    console.log("cleaned");
+    if (state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.done) {
+      forceFinish();
+    }
   });
 
   return (
@@ -110,4 +141,18 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       />
     </>
   );
+};
+
+const getAudio = (
+  status: PomodoroRunningStatus,
+  sounds: { workSound: Work; shortBreak: Break; longBreak: Break }
+): HTMLAudioElement => {
+  switch (status) {
+    case TIMER_RUNNING_STATUS.work:
+      return WORK_AUDIO[sounds.workSound];
+    case TIMER_RUNNING_STATUS.shortBreak:
+      return BREAK_AUDIO[sounds.shortBreak];
+    case TIMER_RUNNING_STATUS.longBreak:
+      return BREAK_AUDIO[sounds.longBreak];
+  }
 };

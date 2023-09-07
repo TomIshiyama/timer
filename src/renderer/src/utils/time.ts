@@ -10,7 +10,7 @@ export function getTimeWithObject(remainingTime: number): Time {
   return {
     hours: Math.floor(remainingTime / 3600000),
     minutes: Math.floor((remainingTime % 3600000) / 60000),
-    seconds: Math.round(((remainingTime % 3600000) % 60000) / 1000)
+    seconds: Math.round((remainingTime % 3600000) / 1000) % 60000
   };
 }
 
@@ -18,7 +18,7 @@ export function getTime(remainingTime: number): Time {
   return {
     hours: Math.floor(remainingTime / 3600000),
     minutes: Math.floor((remainingTime / (1000 * 60)) % 60),
-    seconds: Math.round((remainingTime / 1000) % 60)
+    seconds: Math.round(remainingTime / 1000) % 60
   };
 }
 
@@ -29,7 +29,7 @@ export function timeToUnix(time: Time): number {
 export function getTimeWithoutHours(remainingTime: number): Omit<Time, "hours"> {
   return {
     minutes: Math.floor(remainingTime / (1000 * 60)),
-    seconds: Math.round((remainingTime / 1000) % 60)
+    seconds: Math.round(remainingTime / 1000) % 60
   };
 }
 

@@ -150,23 +150,10 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0)
       mainWindow = createWindow(STORE_NAME, PRELOAD_PATH);
   });
-
-  // tray example
+  // tray
   const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
   const tray = new Tray(icon);
-
-  const contextMenu = Menu.buildFromTemplate([
-    { label: "Item1", type: "radio" },
-    { label: "Item2", type: "radio" },
-    { label: "Item3", type: "radio", checked: true },
-    { label: "Item4", type: "radio" }
-  ]);
-
-  tray.setContextMenu(contextMenu);
-
-  tray.setToolTip("This is my application");
-  tray.setTitle("10:10");
-
+  tray.setToolTip("Pomodoro Timer");
   ipcOnSetTrayTitle(tray);
 });
 
@@ -191,3 +178,23 @@ async function ipcOnSetTrayTitle(tray): Promise<void> {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+async function trayExample(): Promise<void> {
+  // tray example
+  const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
+  const tray = new Tray(icon);
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+    { label: "Item3", type: "radio", checked: true },
+    { label: "Item4", type: "radio" }
+  ]);
+
+  tray.setContextMenu(contextMenu);
+
+  tray.setToolTip("Pomodoro Timer");
+  tray.setTitle("10:10");
+
+  ipcOnSetTrayTitle(tray);
+}
