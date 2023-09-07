@@ -1,10 +1,11 @@
 import { StateContext } from "@renderer/components/utility/StateProvider/StateProvider";
-import { Component, onMount, useContext } from "solid-js";
+import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
+import { Component, onCleanup, onMount, useContext } from "solid-js";
+import { WORK_AUDIO } from "../../../assets/sounds/sounds";
 import { getTimeLiteral } from "../../../utils/time";
 import { useWindowRect } from "../../../utils/useWindowRect";
 import { PomodoroPresentational } from "./Presentational";
 import { PomodoroProps, TIMER_RUNNING_STATUS, TIMER_STATE_TRANSITION } from "./type";
-import { useTimeMovement } from "@renderer/components/utility/TimeMovement/useTimeMovement";
 
 export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { state, setState } = useContext(StateContext);
@@ -12,31 +13,29 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
   const { getRect } = useWindowRect();
 
   // HACK: create a new file for usePomodoroTimer hooks
-  const { getNextPomodoroParameters, isNextFinish } = useTimeMovement();
+  const { getNextPomodoroParameters, isNextFinish, clear, playTurnOverAudio } = useTimeMovement();
 
   // handlers
   const onClickPlay = (): void => {
     // setState("pomodoro", "isRunning", true);
     setState("pomodoro", "stateTransition", TIMER_STATE_TRANSITION.running);
+    setState("pomodoro", "currentAudio", WORK_AUDIO[state.pomodoro.sounds.work]);
     const title = getTimeLiteral(state.pomodoro.remainingTime);
     window.electronAPI.setTrayTitle(title);
   };
 
   const onClickPause = (): void => {
     console.log("onClickPause");
-    clearInterval(state.pomodoro.intervalId);
     setState("pomodoro", {
       stateTransition: TIMER_STATE_TRANSITION.pause,
-      // [state.pomodoro.status]: state.pomodoro.remainingTime,
-      setTime: state.pomodoro.remainingTime,
-      intervalId: undefined
+      setTime: state.pomodoro.remainingTime
     });
+    clear(state.pomodoro.intervalId);
     window.electronAPI.setTrayTitle("pause");
   };
 
   const goNextSection = (): void => {
-    clearInterval(state.pomodoro.intervalId);
-    setState("pomodoro", "intervalId", undefined);
+    clear(state.pomodoro.intervalId);
     setState("pomodoro", (prev) => ({
       ...getNextPomodoroParameters(),
       ...(isNextFinish() && { stateTransition: TIMER_STATE_TRANSITION.done }),
@@ -48,13 +47,13 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
         }
       })
     }));
+    playTurnOverAudio();
   };
 
   // HACK: create a constant for finished status
   // When click the finish button
   const forceFinish = (): void => {
     // HACK: initial state
-    clearInterval(state.pomodoro.intervalId);
     setState("pomodoro", {
       status: TIMER_RUNNING_STATUS.work,
       stateTransition: TIMER_STATE_TRANSITION.initial,
@@ -65,9 +64,9 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       shortBreak: state.preference.shortBreak,
       longBreak: state.preference.longBreak,
       longBreakInterval: state.preference.longBreakInterval,
-      section: { current: 1, limit: state.preference.sectionLimit },
-      intervalId: undefined
+      section: { current: 1, limit: state.preference.sectionLimit }
     });
+    clear(state.pomodoro.intervalId);
   };
 
   const onClickInitialize = (): void => {
@@ -86,8 +85,22 @@ export const PomodoroContainer: Component<PomodoroProps> = (props) => {
       shortBreak: state.preference.shortBreak,
       longBreak: state.preference.longBreak,
       longBreakInterval: state.preference.longBreakInterval,
-      section: { ...state.pomodoro.section, limit: state.preference.sectionLimit }
+      section: { ...state.pomodoro.section, limit: state.preference.sectionLimit },
+      sounds: { ...state.preference.sounds }
     });
+  });
+
+  onMount(() => {
+    if (state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.done) {
+      forceFinish();
+    }
+  });
+
+  onCleanup(() => {
+    console.log("cleaned");
+    if (state.pomodoro.stateTransition === TIMER_STATE_TRANSITION.done) {
+      forceFinish();
+    }
   });
 
   return (
