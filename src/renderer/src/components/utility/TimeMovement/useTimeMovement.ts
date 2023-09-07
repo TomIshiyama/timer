@@ -85,11 +85,11 @@ export function useTimeMovement(): UseTimeMovementReturns {
   const playTurnOverAudio = (): void => {
     console.log("playturnover ");
     if (isNextLongBreak()) {
-      playTurnOver(state.pomodoro.sounds.turnOver);
+      playTurnOver(state.pomodoro.sounds.turnOver, state.preference.sounds.volume);
       return;
     }
     if (isNextShortBreak()) {
-      playTurnOver(state.pomodoro.sounds.turnOver);
+      playTurnOver(state.pomodoro.sounds.turnOver, state.preference.sounds.volume);
       return;
     }
 
@@ -97,13 +97,13 @@ export function useTimeMovement(): UseTimeMovementReturns {
       playDone("shouts");
       return;
     }
-    playTurnOver(state.pomodoro.sounds.turnOver);
+    playTurnOver(state.pomodoro.sounds.turnOver, state.preference.sounds.volume);
     return;
   };
 
   const clear = (intervalId: number | undefined): void => {
-    clearInterval(intervalId);
     pauseAudioLoop(state.pomodoro.currentAudio);
+    clearInterval(intervalId);
     setState("pomodoro", { intervalId: undefined, currentAudio: undefined });
   };
 
