@@ -1,8 +1,10 @@
 # timer
 
-Electron application with Solid and TypeScript
+Electron application with Solid and TypeScript.
 
 ## Project architecture
+
+A project architecture is under considering due to a lack of my knowledge.
 
 [SPA Component の推しディレクトリ構成について語る](https://zenn.dev/yoshiko/articles/99f8047555f700)
 
