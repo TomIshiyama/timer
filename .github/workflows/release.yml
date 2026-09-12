@@ -5,8 +5,11 @@ on:
     tags:
       - v*.*.*
 
+permissions:
+  contents: write
+
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -15,12 +18,12 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Install Dependencies
         run: npm install
@@ -37,11 +40,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: npm run build:win
 
-      - name: release
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          draft: true
-          files: |
+          name: ${{ matrix.os }}
+          if-no-files-found: error
+          path: |
             dist/*.exe
             dist/*.zip
             dist/*.dmg
@@ -50,7 +54,43 @@ jobs:
             dist/*.deb
             dist/*.rpm
             dist/*.tar.gz
-            dist/*.yml
-            dist/*.blockmap
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body: |
+            ## macOS でのインストール
+
+            下の Assets から `-universal-mac.zip` で終わるファイルをダウンロードする。
+            Apple Silicon と Intel の双方で動く。
+
+            ブラウザでダウンロードした場合は、展開した `timer.app` を `アプリケーション` に移し、
+            ターミナルで次を実行してから起動する。
+
+            ```bash
+            xattr -dr com.apple.quarantine /Applications/timer.app
+            ```
+
+            ターミナルだけで済ませる場合は、Assets の zip の URL をコピーして次を実行する。
+            この経路なら上のコマンドは要らない。
+
+            ```bash
+            curl -L -o timer.zip <zip の URL>
+            unzip timer.zip -d /Applications
+            ```
+
+            このアプリは Apple の証明書で署名していないため、
+            ブラウザからダウンロードすると macOS が起動を止める。上の手順はそれを解除するもの。
+          files: artifacts/*
