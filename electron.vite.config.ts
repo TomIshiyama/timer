@@ -2,18 +2,12 @@ import { resolve } from "path";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 import solid from "vite-plugin-solid";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   main: {
-    plugins: [externalizeDepsPlugin()],
-    build: {
-      outDir: "dist/main"
-    }
+    plugins: [externalizeDepsPlugin()]
   },
   preload: {
-    plugins: [externalizeDepsPlugin()],
-    build: {
-      outDir: "dist/preload"
-    }
+    plugins: [externalizeDepsPlugin()]
   },
   renderer: {
     resolve: {
@@ -21,12 +15,7 @@ export default defineConfig({
         "@renderer": resolve("src/renderer/src")
       }
     },
-    build: {
-      outDir: "dist/renderer"
-    },
     plugins: [solid()],
-    esbuild: {
-      drop: ["console", "debugger"]
-    }
+    esbuild: command === "build" ? { drop: ["console", "debugger"] } : {}
   }
-});
+}));
