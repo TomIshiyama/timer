@@ -18,8 +18,8 @@
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
-    "build:mac": "electron-vite build && electron-builder --mac --config",
-    "build:linux": "electron-vite build && electron-builder --linux --config",
+    "build:mac": "npm run build && electron-builder --mac --config",
+    "build:linux": "npm run build && electron-builder --linux --config",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_fb3e314e9173bdc",
@@ -33,7 +33,6 @@
     "@solidjs/router": "^0.8.2",
     "dexie": "^3.2.4",
     "electron-store": "^8.1.0",
-    "electron-updater": "^5.3.0",
     "solid-dexie": "^0.0.5",
     "solid-styled-components": "^0.28.5"
   },
