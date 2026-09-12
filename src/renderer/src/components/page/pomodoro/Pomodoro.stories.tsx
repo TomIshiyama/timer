@@ -9,14 +9,14 @@ const meta = {
   // tags: ["autodocs"], // document を生成してくれるが、不要なのでオフ
   argTypes: {
     // mode: { control: "select", options: ["play", "pause"] }
-    remainingTime: { control: { type: "number", min: 0, step: 1000 } },
-    isRunning: { control: "boolean" },
-    isPaused: { control: "boolean" },
-    isFinished: { control: "boolean" },
-    round: {
-      current: { control: { type: "number", min: 0, max: 3600000, step: 1000 } },
-      limit: { control: { type: "number", min: 0, max: 3600000, step: 1000 } }
-    }
+    remainingTime: { control: { type: "number", min: 0, step: 1000 } }
+    // isRunning: { control: "boolean" },
+    // isPaused: { control: "boolean" },
+    // isFinished: { control: "boolean" },
+    // round: {
+    //   current: { control: { type: "number", min: 0, max: 3600000, step: 1000 } },
+    //   limit: { control: { type: "number", min: 0, max: 3600000, step: 1000 } }
+    // }
   }
 } satisfies Meta<typeof PomodoroPresentational>;
 

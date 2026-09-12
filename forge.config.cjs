@@ -2,6 +2,7 @@ module.exports = {
   packagerConfig: {
     ignore: [
       /^\/src/,
+      /^\/out/,
       /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)/
     ]
   },

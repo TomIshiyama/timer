@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, nativeImage, Tray, Menu, ipcMain, screen } from "electron";
+import { app, shell, BrowserWindow, nativeImage, Tray, ipcMain, screen } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
@@ -30,10 +30,11 @@ type Window = {
   height: number;
 };
 
-type State = {
-  name: string;
-  windowSize: Window;
-};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// type State = {
+//   name: string;
+//   windowSize: Window;
+// };
 
 function createWindow(
   storeName: string,
@@ -140,15 +141,14 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  let mainWindow = createWindow(STORE_NAME, PRELOAD_PATH);
+  createWindow(STORE_NAME, PRELOAD_PATH);
 
   ipcPing();
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0)
-      mainWindow = createWindow(STORE_NAME, PRELOAD_PATH);
+    if (BrowserWindow.getAllWindows().length === 0) createWindow(STORE_NAME, PRELOAD_PATH);
   });
   // tray
   const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
@@ -171,7 +171,7 @@ async function ipcPing(): Promise<void> {
 }
 
 async function ipcOnSetTrayTitle(tray): Promise<void> {
-  ipcMain.on("getTrayTitle", (e, title) => {
+  ipcMain.on("getTrayTitle", (_, title) => {
     tray.setTitle(title);
   });
 }
@@ -179,22 +179,23 @@ async function ipcOnSetTrayTitle(tray): Promise<void> {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-async function trayExample(): Promise<void> {
-  // tray example
-  const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
-  const tray = new Tray(icon);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// async function trayExample(): Promise<void> {
+//   // tray example
+//   const icon = nativeImage.createFromPath("../src/renderer/assets/logo.png");
+//   const tray = new Tray(icon);
 
-  const contextMenu = Menu.buildFromTemplate([
-    { label: "Item1", type: "radio" },
-    { label: "Item2", type: "radio" },
-    { label: "Item3", type: "radio", checked: true },
-    { label: "Item4", type: "radio" }
-  ]);
+//   const contextMenu = Menu.buildFromTemplate([
+//     { label: "Item1", type: "radio" },
+//     { label: "Item2", type: "radio" },
+//     { label: "Item3", type: "radio", checked: true },
+//     { label: "Item4", type: "radio" }
+//   ]);
 
-  tray.setContextMenu(contextMenu);
+//   tray.setContextMenu(contextMenu);
 
-  tray.setToolTip("Pomodoro Timer");
-  tray.setTitle("10:10");
+//   tray.setToolTip("Pomodoro Timer");
+//   tray.setTitle("10:10");
 
-  ipcOnSetTrayTitle(tray);
-}
+//   ipcOnSetTrayTitle(tray);
+// }
