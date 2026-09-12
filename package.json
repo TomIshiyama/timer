@@ -55,7 +55,7 @@
     "chromatic": "^6.17.4",
     "electron": "^22.3.4",
     "electron-builder": "^23.6.0",
-    "electron-vite": "^1.0.21",
+    "electron-vite": "5.0.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -64,13 +64,13 @@
     "prettier": "^2.8.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "solid-js": "^1.6.16",
+    "solid-js": "1.9.15",
     "storybook": "^7.0.12",
     "storybook-dark-mode": "^3.0.0",
     "storybook-solidjs": "^1.0.0-beta.2",
     "storybook-solidjs-vite": "^1.0.0-beta.2",
     "typescript": "5.9.3",
-    "vite": "^4.2.1",
-    "vite-plugin-solid": "^2.6.1"
+    "vite": "7.3.6",
+    "vite-plugin-solid": "2.11.14"
   }
 }
