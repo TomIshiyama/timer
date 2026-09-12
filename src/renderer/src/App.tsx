@@ -32,7 +32,7 @@ const Content: Component = () => {
 
   return (
     <ContentWrapper>
-      <div style={{ display: "flex", opacity: 0.1 + state.preference.opacity ?? 1 * 0.9 }}>
+      <div style={{ display: "flex", opacity: 0.1 + state.preference.opacity }}>
         <Menu
           onClick={(): void => {
             setOpen((prev) => !prev);

@@ -1,7 +1,6 @@
 import { Tabs } from "@kobalte/core";
 import { ComponentParameters } from "@renderer/utils/types";
-import { Component, For, createSignal } from "solid-js";
-import { JSX } from "solid-js/types/jsx";
+import { Component, For, JSX, createSignal } from "solid-js";
 import { styled } from "solid-styled-components";
 import { COLOR, GRID } from "../../../utils/color";
 

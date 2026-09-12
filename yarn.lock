@@ -1234,10 +1234,10 @@
   resolved "https://registry.yarnpkg.com/@electron-toolkit/preload/-/preload-1.0.3.tgz#54a48cd89551473ead4e7f31b48efa581c2bc7ba"
   integrity sha512-3V/BS5Rg+Yd8lJyPA6kvHJe7zznPx9A5QrJ7AZlmnEkVWadiGSLrD87xyEaDlzgWKFuLJsyE9E4E0uNIJLWSvQ==
 
-"@electron-toolkit/tsconfig@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@electron-toolkit/tsconfig/-/tsconfig-1.0.1.tgz#78048d3178dd7a6a573590e23240f0764b0c14af"
-  integrity sha512-M0Mol3odspvtCuheyujLNAW7bXq7KFNYVMRtpjFa4ZfES4MuklXBC7Nli/omvc+PRKlrklgAGx3l4VakjNo8jg==
+"@electron-toolkit/tsconfig@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@electron-toolkit/tsconfig/-/tsconfig-2.0.0.tgz#fdf9424ebd3a2bee35f83d230ab819d5dd06bece"
+  integrity sha512-AdPsP770WhW7b260h13SHMdmjEEHJL6xFtgi3jwgdsSQbJOkJLeNnnpZW9qxTPCvmRI6vmdzWz5K3gibFS6SNg==
 
 "@electron-toolkit/utils@^1.0.2":
   version "1.0.2"
@@ -9550,10 +9550,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@^4.9.5:
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
-  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+typescript@5.9.3:
+  version "5.9.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
+  integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 uglify-js@^3.1.4:
   version "3.17.4"

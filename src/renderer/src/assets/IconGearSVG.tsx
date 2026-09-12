@@ -11,9 +11,9 @@ export const IconGearSVG: Component = () => {
         x="0px"
         y="0px"
         viewBox="0 0 512 512"
-        style="width: 32px; height: 32px; opacity: 1; "
+        style={{ width: "32px", height: "32px", opacity: "1" }}
       >
-        <style type="text/css"></style>
+        <style type="text/css" />
         <g>
           <path
             class="st0"
@@ -32,7 +32,7 @@ export const IconGearSVG: Component = () => {
 		C512,224.714,506.032,217.165,497.569,215.166z M256.006,303.103c-26.002,0-47.098-21.097-47.098-47.108
 		s21.097-47.108,47.098-47.108c26.011,0,47.108,21.097,47.108,47.108S282.017,303.103,256.006,303.103z"
             style={`fill: ${COLOR.dark.base.color}`}
-          ></path>
+          />
         </g>
       </svg>
     </>

@@ -1,5 +1,4 @@
-import { Component } from "solid-js";
-import { JSX } from "solid-js/types/jsx";
+import { Component, JSX } from "solid-js";
 
 export type Key = string | number;
 
