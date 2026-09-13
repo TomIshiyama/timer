@@ -41,11 +41,21 @@ $ npm run build:mac
 $ npm run build:linux
 ```
 
+### Storybook
+
+Storybook は現在起動しない。`yarn storybook` は `require is not defined in ES module scope` で止まる。ビルド基盤を Vite 7 へ上げた一方で、Storybook を 7.0.12 に据え置いたため。`@storybook/builder-vite` 7.0.12 の peer は `vite: ^3 || ^4` に留まっている。
+
+リリース経路には関わらないため、配布物には影響しない。Storybook 10 系への移行は別途行う。
+
 ## macOS 配布時のコード署名
 
-macOS 版は Apple の署名証明書がない環境でビルドすると、electron-builder 23 が署名処理そのものを打ち切る。未署名の `.app` をダウンロード経由で受け取ると Gatekeeper が「壊れているため開けません」と判定し、起動できない。
+Apple の署名証明書を持たないため、`electron-builder.yml` で `mac.identity` に `"-"` を指定して ad-hoc 署名している。ad-hoc 署名は発行元を伴わない自己完結の署名で、バンドルの整合性は保たれる。
 
-これを避けるため、`build/afterSign.js` がパッケージ後にバンドルの署名状態を確認し、未署名なら ad-hoc 署名を付与する。ad-hoc 署名は発行元を伴わない自己完結の署名で、バンドルの整合性は保たれるため「壊れている」判定は起きない。ただし発行元が未認証であることに変わりはないので、受け取り方によっては初回起動時に「開発元を確認できません」の警告が出る。
+この指定を外すと electron-builder は署名処理そのものを打ち切る。未署名の `.app` をダウンロード経由で受け取ると、Gatekeeper が「壊れているため開けません」と判定して起動できない。
+
+`build/entitlements.mac.plist` の `com.apple.security.cs.disable-library-validation` も外せない。ad-hoc 署名では Hardened Runtime の Library Validation が働く。Team ID を持たない `Electron Framework` を読み込めず、起動が失敗する。
+
+発行元が未認証であることに変わりはないため、受け取り方によっては初回起動時に「開発元を確認できません」の警告が出る。
 
 ### 配布する側
 
