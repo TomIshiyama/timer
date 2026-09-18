@@ -3,7 +3,7 @@ import { Component, createSignal, onMount, useContext } from "solid-js";
 import { Routes } from "./components/utility/Routes";
 import { StateContext, StateProvider } from "./components/utility/StateProvider/StateProvider";
 import { TimeMovement } from "./components/utility/TimeMovement";
-import { Menu } from "./components/ui/Menu/Menu";
+import { Menu, SIDEBAR_WIDTH } from "./components/ui/Menu/Menu";
 import { COLOR } from "./utils/color";
 import { styled } from "solid-styled-components";
 
@@ -50,7 +50,7 @@ const Content: Component = () => {
           style={{
             width: "100%",
             background: `${COLOR.dark.base.background}`,
-            "margin-left": getOpen() ? "88px" : "48px",
+            "margin-left": getOpen() ? SIDEBAR_WIDTH.expanded : SIDEBAR_WIDTH.collapsed,
             transition: "all 0.2s ease-in-out 0s"
           }}
         >

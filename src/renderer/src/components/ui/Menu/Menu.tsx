@@ -13,6 +13,12 @@ type Props = {
 };
 
 const ICON_SIZE = "clamp(16px, 6vh, 32px)";
+const TAB_PADDING_PX = 16;
+
+export const SIDEBAR_WIDTH = {
+  collapsed: `calc(${ICON_SIZE} + ${TAB_PADDING_PX}px)`,
+  expanded: "88px"
+} as const;
 
 const tabListWithIcon = [
   // { value: "/", label: "Home" },
@@ -20,7 +26,7 @@ const tabListWithIcon = [
     value: routes.pomodoro.path,
     label: (
       <>
-        <IconTomatoSVG size={ICON_SIZE} /> Pomodoro
+        <IconTomatoSVG /> Pomodoro
       </>
     ) // should use icon
   },
@@ -28,7 +34,7 @@ const tabListWithIcon = [
     value: routes.preference.path,
     label: (
       <>
-        <IconGearSVG size={ICON_SIZE} /> Preference
+        <IconGearSVG /> Preference
       </>
     )
   }
@@ -101,7 +107,7 @@ export const Menu: Component<Props> = (props) => {
         position: "fixed",
         background: `${COLOR.dark.base.background}`,
         "border-right": `1px solid ${COLOR.dark.footer.border}`,
-        width: props.isOpen ? "88px" : "48px",
+        width: props.isOpen ? SIDEBAR_WIDTH.expanded : SIDEBAR_WIDTH.collapsed,
         transition: `all ${TRANSITION_MS}ms ease-in-out 0s`
       }}
     >
