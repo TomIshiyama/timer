@@ -3,7 +3,7 @@ import { Component, Show, createEffect, createSignal, on, onCleanup, onMount, JS
 import { styled } from "solid-styled-components";
 import { IconGearSVG } from "../../../assets/IconGearSVG";
 import { IconTomatoSVG } from "../../../assets/IconTomatoSVG";
-import { COLOR } from "../../../utils/color";
+import { COLOR, GRID } from "../../../utils/color";
 import { Tab } from "../Tab/Tab";
 import { routes } from "@renderer/components/utility/Routes/routes";
 
@@ -13,10 +13,9 @@ type Props = {
 };
 
 const ICON_SIZE = "clamp(16px, 6vh, 32px)";
-const TAB_PADDING_PX = 16;
 
 export const SIDEBAR_WIDTH = {
-  collapsed: `calc(${ICON_SIZE} + ${TAB_PADDING_PX}px)`,
+  collapsed: `calc(${ICON_SIZE} + ${GRID.base}px)`,
   expanded: "88px"
 } as const;
 
