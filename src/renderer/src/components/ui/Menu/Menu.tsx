@@ -52,6 +52,7 @@ const tabListOnlyIcon = [
 ];
 
 const TRANSITION_MS = 200;
+const RESIZE_DEBOUNCE_MS = 200;
 
 export const Menu: Component<Props> = (props) => {
   const navigate = useNavigate();
@@ -78,8 +79,9 @@ export const Menu: Component<Props> = (props) => {
   onMount(() => {
     let id: ReturnType<typeof setTimeout>;
     const onResize = (): void => {
+      if (showLabel()) return;
       clearTimeout(id);
-      id = setTimeout(() => setResizeTick((n) => n + 1), TRANSITION_MS);
+      id = setTimeout(() => setResizeTick((n) => n + 1), RESIZE_DEBOUNCE_MS);
     };
     window.addEventListener("resize", onResize);
     onCleanup(() => {
@@ -88,7 +90,7 @@ export const Menu: Component<Props> = (props) => {
     });
   });
 
-  const layoutKey = (): string => `${showLabel()}-${resizeTick()}`;
+  const tabRemountKey = (): string => `${showLabel()}-${resizeTick()}`;
 
   const renderTab = (): JSX.Element => (
     <Tab
@@ -110,7 +112,7 @@ export const Menu: Component<Props> = (props) => {
         transition: `all ${TRANSITION_MS}ms ease-in-out 0s`
       }}
     >
-      <Show when={layoutKey()} keyed>
+      <Show when={tabRemountKey()} keyed>
         {renderTab()}
       </Show>
       <Button onClick={props.onClick}>{props.isOpen ? "<" : ">"}</Button>
