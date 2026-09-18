@@ -13,6 +13,18 @@ body {
   margin: 0;
 }
 
+/* body の drag が子孫へ継承され、操作要素のクリックがウィンドウ移動に
+   吸われるため打ち消す。Electron 22 の Chromium では継承しなかった。 */
+button,
+input,
+select,
+textarea,
+a,
+[role="tab"],
+[role="button"] {
+  -webkit-app-region: no-drag;
+}
+
 ul {
   list-style: none;
 }
