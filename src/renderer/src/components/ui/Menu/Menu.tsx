@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@solidjs/router";
-import { Component, Show, createEffect, createSignal, on, onCleanup, JSX } from "solid-js";
+import { Component, Show, createEffect, createSignal, on, onCleanup, onMount, JSX } from "solid-js";
 import { styled } from "solid-styled-components";
 import { IconGearSVG } from "../../../assets/IconGearSVG";
 import { IconTomatoSVG } from "../../../assets/IconTomatoSVG";
@@ -12,13 +12,15 @@ type Props = {
   isOpen?: boolean;
 };
 
+const ICON_SIZE = "clamp(16px, 6vh, 32px)";
+
 const tabListWithIcon = [
   // { value: "/", label: "Home" },
   {
     value: routes.pomodoro.path,
     label: (
       <>
-        <IconTomatoSVG /> Pomodoro
+        <IconTomatoSVG size={ICON_SIZE} /> Pomodoro
       </>
     ) // should use icon
   },
@@ -26,7 +28,7 @@ const tabListWithIcon = [
     value: routes.preference.path,
     label: (
       <>
-        <IconGearSVG /> Preference
+        <IconGearSVG size={ICON_SIZE} /> Preference
       </>
     )
   }
@@ -36,15 +38,14 @@ const tabListOnlyIcon = [
   // { value: "/", label: "Home" },
   {
     value: routes.pomodoro.path,
-    label: <IconTomatoSVG />
+    label: <IconTomatoSVG size={ICON_SIZE} />
   },
   {
     value: routes.preference.path,
-    label: <IconGearSVG />
+    label: <IconGearSVG size={ICON_SIZE} />
   }
 ];
 
-// サイドバー幅のトランジション時間に合わせる。
 const TRANSITION_MS = 200;
 
 export const Menu: Component<Props> = (props) => {
@@ -52,11 +53,6 @@ export const Menu: Component<Props> = (props) => {
 
   const location = useLocation();
 
-  // Kobalte の Indicator は選択タブの寸法を測って位置を決めるが、測り直すのは
-  // 選択が変わったときだけで、ラベルを入れ替えて高さが変わっても追従しない。
-  // そこで Tab ごと作り直して初期化からやり直させる。
-  // 入れ替えは幅の変化を待ってから行う。途中で測ると animation 中の値を拾う。
-  // 畳むときは即座でよい。アイコンのみの高さは幅に依らないため。
   const [showLabel, setShowLabel] = createSignal(props.isOpen ?? false);
   createEffect(
     on(
@@ -73,10 +69,26 @@ export const Menu: Component<Props> = (props) => {
     )
   );
 
-  const renderTab = (tabList: typeof tabListWithIcon): JSX.Element => (
+  const [resizeTick, setResizeTick] = createSignal(0);
+  onMount(() => {
+    let id: ReturnType<typeof setTimeout>;
+    const onResize = (): void => {
+      clearTimeout(id);
+      id = setTimeout(() => setResizeTick((n) => n + 1), TRANSITION_MS);
+    };
+    window.addEventListener("resize", onResize);
+    onCleanup(() => {
+      window.removeEventListener("resize", onResize);
+      clearTimeout(id);
+    });
+  });
+
+  const layoutKey = (): string => `${showLabel()}-${resizeTick()}`;
+
+  const renderTab = (): JSX.Element => (
     <Tab
       disableBorder
-      tabList={tabList}
+      tabList={showLabel() ? tabListWithIcon : tabListOnlyIcon}
       orientation={"vertical"}
       onChange={(path): void => navigate(path)}
       defaultValue={location.pathname}
@@ -93,8 +105,9 @@ export const Menu: Component<Props> = (props) => {
         transition: `all ${TRANSITION_MS}ms ease-in-out 0s`
       }}
     >
-      <Show when={showLabel()}>{renderTab(tabListWithIcon)}</Show>
-      <Show when={!showLabel()}>{renderTab(tabListOnlyIcon)}</Show>
+      <Show when={layoutKey()} keyed>
+        {renderTab()}
+      </Show>
       <Button onClick={props.onClick}>{props.isOpen ? "<" : ">"}</Button>
     </div>
   );

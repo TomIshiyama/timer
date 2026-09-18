@@ -1,7 +1,11 @@
 import { Component } from "solid-js";
 import { COLOR } from "../utils/color";
 
-export const IconGearSVG: Component = () => {
+type Props = {
+  size?: string;
+};
+
+export const IconGearSVG: Component<Props> = (props) => {
   return (
     <>
       <svg
@@ -11,7 +15,7 @@ export const IconGearSVG: Component = () => {
         x="0px"
         y="0px"
         viewBox="0 0 512 512"
-        style={{ width: "32px", height: "32px", opacity: "1" }}
+        style={{ width: props.size ?? "32px", height: props.size ?? "32px", opacity: "1" }}
       >
         <style type="text/css" />
         <g>

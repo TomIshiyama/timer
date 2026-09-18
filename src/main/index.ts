@@ -151,8 +151,6 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow(STORE_NAME, PRELOAD_PATH);
   });
   // tray
-  // メニューバー用に縮小する。原寸 512px のままだと項目に収まらない。
-  // アイコンはほぼ全面が不透明なので、テンプレート画像にすると塗りつぶしになる。
   const trayIcon = nativeImage.createFromPath(icon).resize({ width: 16, height: 16 });
   const tray = new Tray(trayIcon);
   tray.setToolTip("Pomodoro Timer");
