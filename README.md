@@ -106,4 +106,15 @@ $ open /Applications/timer.app
 
 `yarn build:mac:local` は実行中の Mac のアーキテクチャだけをビルドし、dmg も zip も作らない。配布用の `yarn build:mac` より速く終わる。Apple Silicon の手元では 45 秒ほどだった。
 
-更新は `git pull` してビルドし直す。ダウンロードで受け取る場合と違い、毎回 quarantine 属性を外す操作は要らない。
+新しいバージョンに更新するときは、同じディレクトリで次を実行する。
+
+```bash
+$ git pull
+$ yarn install --frozen-lockfile
+$ yarn build:mac:local
+$ cp -R dist/mac-arm64/timer.app /Applications/
+```
+
+`yarn install` は依存が変わっていなければ 10 秒ほどで終わる。アプリを起動したままでも `cp` は通るが、置き換えた内容は次に起動したときから反映される。
+
+ダウンロードで受け取る場合と違い、更新のたびに quarantine 属性を外す操作は要らない。
