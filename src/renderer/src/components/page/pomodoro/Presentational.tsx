@@ -20,7 +20,9 @@ export const PomodoroPresentational: Component<PomodoroProps> = (props) => {
         ) : (
           <>
             {/* TODO: fix display position */}
-            <p>{`${props.section.current} / ${props.section.limit}`}</p>
+            <Section
+              size={props.size ?? 400}
+            >{`${props.section.current} / ${props.section.limit}`}</Section>
             <div>
               <CircleCountDown
                 size={props.size ?? 400}
@@ -48,6 +50,10 @@ export const PomodoroPresentational: Component<PomodoroProps> = (props) => {
     </Wrapper>
   );
 };
+
+const Section = styled("p")<{ size: number }>((props) => ({
+  fontSize: `${Math.round(props.size / 16)}px`
+}));
 
 const PomodoroInner = styled("div")((props) => ({
   backgsectionColor: COLOR.dark.base.background,
